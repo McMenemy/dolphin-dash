@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="game.css">
+    <title>DolphinDash</title>
+  </head>
+  <body>
+    <canvas id="game-canvas"></canvas>
+
+    <script type="application/javascript" src="lib/util.js"></script>
+    <script type="application/javascript" src="lib/movingObject.js"></script>
+    <script type="application/javascript" src="lib/fish.js"></script>
+    <script type="application/javascript" src="lib/game.js"></script>
+    <script type="application/javascript" src="lib/gameView.js"></script>
+
+    <script type="application/javascript">
+      (function () {
+        var canvas = document.getElementById('game-canvas');
+        canvas.width = 600;
+        canvas.height = 600;
+
+        var ctx = canvas.getContext('2d');
+        var game = new DolphinDash.Game();
+        new DolphinDash.GameView(game, ctx).start();
+      })();
+    </script>
+  </body>
+</html>
