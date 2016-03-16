@@ -11,6 +11,15 @@
       To eat fish you must catch them (use WSAD to move), but be warned they are slippery fish to catch!
     </p>
 
+    <button onclick="startGame()">play game</button>
+    <p>Score: </p>
+    <p id='scoreboard'>0</p>
+
+    <p>Game Status: </p>
+    <p id='gamestatus'>game on</p>
+    <p>Timer : </p>
+    <p id='timer'>0</p>
+
     <canvas id="game-canvas"></canvas>
 
     <script type="application/javascript" src="lib/util.js"></script>
@@ -22,14 +31,21 @@
     <script type="application/javascript" src="lib/gameView.js"></script>
 
     <script type="application/javascript">
+      var startGame = function() {
+        var canvas = document.getElementById('game-canvas');
+        var ctx = canvas.getContext('2d');
+        var game = new DolphinDash.Game();
+        new DolphinDash.GameView(game, ctx).start();
+      }
+    </script>
+
+    <script type="application/javascript">
       (function () {
         var canvas = document.getElementById('game-canvas');
         canvas.width = 600;
         canvas.height = 600;
 
-        var ctx = canvas.getContext('2d');
-        var game = new DolphinDash.Game();
-        new DolphinDash.GameView(game, ctx).start();
+        // new DolphinDash.GameView(game, ctx).start();
       })();
     </script>
   </body>

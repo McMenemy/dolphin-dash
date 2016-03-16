@@ -1,2 +1,9 @@
 #game-canvas {
+  width: 600px;
+  height: 600px;
+  background-image: url('game_background.png');
+}
+
+p {
+  display: inline-block;
 }
