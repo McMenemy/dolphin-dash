@@ -8,3 +8,7 @@ You are a microorganism trying to make your way in the big ocean by munching on 
 - prey warn each other of predators
 - gradual daytime to nighttime shift
 - game logic written in pure JavaScript
+
+## Future Features
+- animated sprites
+- database that stores high scores
