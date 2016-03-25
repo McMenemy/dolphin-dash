@@ -2,26 +2,44 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="game.css">
-    <title>DolphinDash</title>
+    <title>MicroorganismMunch</title>
   </head>
   <body>
-
     <div class='container'>
-    <p>
-    You are a microorganism trying to make your way in the big ocean by munching on smaller microorganisms that swarm the seas. Your prey will not allow their demise easily and it will take some skillful maneuvering to catch them. However, take care not to narrow you focus too much because sometimes an even larger microorganism will patrol these waters and you may become the prey not the predator... One last warning - as the night approaches differentiating between friend and foe may not be easy.
-    </p>
+    <div class='left-pane'>
+      <button class="play-button" onclick="startGame()">play game</button>
 
-    <button onclick="startGame()">play game</button>
-    <p>Score: </p>
-    <p id='scoreboard'>0</p>
+      <p class='background'>
+        You are a microorganism trying to make your way in the big ocean by munching on smaller microorganisms that swarm the seas. Your prey will not allow their demise easily and it will take some skillful maneuvering to catch them. However, take care not to narrow you focus too much because sometimes an even larger microorganism will patrol these waters and you may become the prey not the predator... One last warning - as the night approaches differentiating between friend and foe may not be easy.
+      </p>
 
-    <p>Game Status: </p>
-    <p id='gamestatus'>game on</p>
-    <p>Timer : </p>
-    <p id='timer'>0</p>
+      <h2>Directions</h2>
+        <ul>
+          <li>Use WSAD to increase your speed in that direction</li>
+          <li>Eat the prey for points</li>
+          <li>Don't get caught by the predator</li>
+        </ul>
+    </div>
 
-    <canvas id="game-canvas"></canvas>
+    <div class='center-pane'>
+      <p>Score: </p>
+      <p id='scoreboard'>0</p>
+
+      <p>Game Status: </p>
+      <p id='gamestatus' class='gamestatus'>game on</p>
+      <p class='timer'>Timer : </p>
+      <p id='timer' class='time-left'>0</p>
+
+      <canvas id="game-canvas"></canvas>
+    </div>
+
+
+    <div class='right-pane'>
+
+    </div>
+
 
     </div>
 
