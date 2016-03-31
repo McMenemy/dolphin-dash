@@ -55,9 +55,9 @@
       var startGame = function() {
         var canvas = document.getElementById('game-canvas');
         var ctx = canvas.getContext('2d');
-        var game = new DolphinDash.Game();
+        var game = new MicroMunch.Game();
 
-        new DolphinDash.GameView(game, ctx).start();
+        new MicroMunch.GameView(game, ctx).start();
       }
     </script>
 
@@ -67,7 +67,7 @@
         canvas.width = 600;
         canvas.height = 600;
 
-        // new DolphinDash.GameView(game, ctx).start();
+        // new MicroMunch.GameView(game, ctx).start();
       })();
     </script>
   </body>
