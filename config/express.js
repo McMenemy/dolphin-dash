@@ -1,3 +1,4 @@
+// var config = require('config'); use if session needs added
 var express = require('express');
 var morgan = require('morgan');
 var compress = require('compression');
@@ -23,6 +24,8 @@ module.exports = function () {
   app.set('view engine', 'ejs');
 
   require('../app/routes/index.server.routes.js')(app);
+
+  app.use(express.static('./public'));
 
   return app;
 };

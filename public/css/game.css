@@ -1,7 +1,9 @@
 #game-canvas {
   width: 600px;
   height: 600px;
-  background-image: url('game_background.png');
+  background-image: url('../img/game_background.png');
+  background-size: 600px 600px;
+  background-repeat: no-repeat;
   margin: auto;
 }
 
