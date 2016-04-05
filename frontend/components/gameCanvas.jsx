@@ -1,20 +1,29 @@
 var React = require('react');
+var GameBar = require('../components/gameBar');
+var Paper = require('material-ui/lib/paper');
 
 var GameCanvas = React.createClass({
 
   render: function () {
     return (
-      <div className='center-pane'>
-        <p>Score: </p>
-        <p id='scoreboard'>0</p>
+      <Paper
+        zDpeth={0}
+        style={{
+          width: '600px',
+          display: 'inline-block',
+        }}>
 
-        <p>Game Status: </p>
-        <p id='gamestatus' className='gamestatus'>game on</p>
-        <p className='timer'>Timer : </p>
-        <p id='timer' className='time-left'>0</p>
+        <GameBar />
 
-        <canvas id="game-canvas"></canvas>
-      </div>
+        <Paper
+          zDepth={1}
+          style={{
+            width: 600,
+            height: 600,
+          }}>
+          <canvas id="game-canvas"></canvas>
+        </Paper>
+      </Paper>
     );
   },
 

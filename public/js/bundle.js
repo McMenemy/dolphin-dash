@@ -31151,10 +31151,9 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'container' },
+	      null,
 	      React.createElement(Background, null),
-	      React.createElement(GameCanvas, null),
-	      React.createElement(Scoreboard, null)
+	      React.createElement(GameCanvas, null)
 	    );
 	  }
 	
@@ -31167,6 +31166,8 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var GameBar = __webpack_require__(342);
+	var Paper = __webpack_require__(320);
 	
 	var GameCanvas = React.createClass({
 	  displayName: 'GameCanvas',
@@ -31174,39 +31175,24 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      'div',
-	      { className: 'center-pane' },
+	      Paper,
+	      {
+	        zDpeth: 0,
+	        style: {
+	          width: '600px',
+	          display: 'inline-block'
+	        } },
+	      React.createElement(GameBar, null),
 	      React.createElement(
-	        'p',
-	        null,
-	        'Score: '
-	      ),
-	      React.createElement(
-	        'p',
-	        { id: 'scoreboard' },
-	        '0'
-	      ),
-	      React.createElement(
-	        'p',
-	        null,
-	        'Game Status: '
-	      ),
-	      React.createElement(
-	        'p',
-	        { id: 'gamestatus', className: 'gamestatus' },
-	        'game on'
-	      ),
-	      React.createElement(
-	        'p',
-	        { className: 'timer' },
-	        'Timer : '
-	      ),
-	      React.createElement(
-	        'p',
-	        { id: 'timer', className: 'time-left' },
-	        '0'
-	      ),
-	      React.createElement('canvas', { id: 'game-canvas' })
+	        Paper,
+	        {
+	          zDepth: 1,
+	          style: {
+	            width: 600,
+	            height: 600
+	          } },
+	        React.createElement('canvas', { id: 'game-canvas' })
+	      )
 	    );
 	  }
 	
@@ -31219,7 +31205,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PlayButton = __webpack_require__(238);
+	var Paper = __webpack_require__(320);
 	
 	var Background = React.createClass({
 	  displayName: 'Background',
@@ -31227,9 +31213,13 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      'div',
-	      { className: 'left-pane' },
-	      React.createElement(PlayButton, null),
+	      Paper,
+	      {
+	        style: {
+	          width: '325px',
+	          float: 'left',
+	          padding: '10px'
+	        } },
 	      React.createElement(
 	        'p',
 	        { className: 'background' },
@@ -31293,14 +31283,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var Game = __webpack_require__(239);
-	var GameView = __webpack_require__(240);
-	var MovingObject = __webpack_require__(241);
-	var Player = __webpack_require__(242);
-	var Predator = __webpack_require__(245);
-	var Prey = __webpack_require__(243);
-	var GameUtil = __webpack_require__(244);
-	var RaisedButton = __webpack_require__(246);
 	
 	var PlayButton = React.createClass({
 	  displayName: 'PlayButton',
@@ -31330,9 +31312,6 @@
 	  render: function () {
 	    return React.createElement(RaisedButton, {
 	      label: 'Play Game',
-	      style: {
-	        margin: '52px 0px 0px 0px'
-	      },
 	      onMouseDown: this.startGame
 	    });
 	  }
@@ -39569,6 +39548,673 @@
 	
 	module.exports = baseCopy;
 
+
+/***/ },
+/* 342 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PlayButton = __webpack_require__(238);
+	var Toolbar = __webpack_require__(343);
+	var ToolbarGroup = __webpack_require__(344);
+	var Separator = __webpack_require__(345);
+	var ToolbarTitle = __webpack_require__(346);
+	var RaisedButton = __webpack_require__(246);
+	var Paper = __webpack_require__(320);
+	var Game = __webpack_require__(239);
+	var GameView = __webpack_require__(240);
+	var MovingObject = __webpack_require__(241);
+	var Player = __webpack_require__(242);
+	var Predator = __webpack_require__(245);
+	var Prey = __webpack_require__(243);
+	var GameUtil = __webpack_require__(244);
+	
+	var GameBar = React.createClass({
+	  displayName: 'GameBar',
+	
+	  startGame: function () {
+	    var canvas = document.getElementById('game-canvas');
+	    canvas.width = 600;
+	    canvas.height = 600;
+	    var ctx = canvas.getContext('2d');
+	    this.runScripts();
+	    var game = new MicroMunch.Game();
+	
+	    new MicroMunch.GameView(game, ctx).start();
+	  },
+	
+	  runScripts: function () {
+	    // kind of a hack because originally the game logic was a bunch of IIFEs and just HTML
+	    GameUtil();
+	    MovingObject();
+	    Prey();
+	    Player();
+	    Predator();
+	    Game();
+	    GameView();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      Toolbar,
+	      null,
+	      React.createElement(
+	        ToolbarGroup,
+	        null,
+	        React.createElement(ToolbarTitle, { text: 'Score' }),
+	        React.createElement(ToolbarTitle, { id: 'scoreboard', text: '0' }),
+	        React.createElement(Separator, null)
+	      ),
+	      React.createElement(
+	        ToolbarGroup,
+	        null,
+	        React.createElement(ToolbarTitle, { text: 'Time' }),
+	        React.createElement(ToolbarTitle, { id: 'timer', text: '45' })
+	      ),
+	      React.createElement(
+	        ToolbarGroup,
+	        null,
+	        React.createElement(RaisedButton, {
+	          label: 'Play Game',
+	          onMouseDown: this.startGame
+	        })
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = GameBar;
+
+/***/ },
+/* 343 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _stylePropable = __webpack_require__(322);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _getMuiTheme = __webpack_require__(266);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var Toolbar = _react2.default.createClass({
+	  displayName: 'Toolbar',
+	
+	  propTypes: {
+	    /**
+	     * Can be a `ToolbarGroup` to render a group of related items.
+	     */
+	    children: _react2.default.PropTypes.node,
+	
+	    /**
+	     * The css class name of the root element.
+	     */
+	    className: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Do not apply `desktopGutter` to the `Toolbar`.
+	     */
+	    noGutter: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default],
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      noGutter: false
+	    };
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  getTheme: function getTheme() {
+	    return this.state.muiTheme.toolbar;
+	  },
+	  getSpacing: function getSpacing() {
+	    return this.state.muiTheme.rawTheme.spacing;
+	  },
+	  getStyles: function getStyles() {
+	    return {
+	      root: {
+	        boxSizing: 'border-box',
+	        WebkitTapHighlightColor: 'rgba(0,0,0,0)',
+	        backgroundColor: this.getTheme().backgroundColor,
+	        height: this.getTheme().height,
+	        width: '100%',
+	        padding: this.props.noGutter ? 0 : '0px ' + this.getSpacing().desktopGutter + 'px'
+	      }
+	    };
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var children = _props.children;
+	    var className = _props.className;
+	    var style = _props.style;
+	
+	    var other = _objectWithoutProperties(_props, ['children', 'className', 'style']);
+	
+	    var styles = this.getStyles();
+	
+	    return _react2.default.createElement(
+	      'div',
+	      _extends({}, other, { className: className, style: this.prepareStyles(styles.root, style) }),
+	      children
+	    );
+	  }
+	});
+	
+	exports.default = Toolbar;
+	module.exports = exports['default'];
+
+/***/ },
+/* 344 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _colors = __webpack_require__(274);
+	
+	var _colors2 = _interopRequireDefault(_colors);
+	
+	var _stylePropable = __webpack_require__(322);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _getMuiTheme = __webpack_require__(266);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var ToolbarGroup = _react2.default.createClass({
+	  displayName: 'ToolbarGroup',
+	
+	  propTypes: {
+	    /**
+	     * Can be any node or number of nodes.
+	     */
+	    children: _react2.default.PropTypes.node,
+	
+	    /**
+	     * The css class name of the root element.
+	     */
+	    className: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Set this to true for if the `ToolbarGroup` is the first child of `Toolbar`
+	     * to prevent setting the left gap.
+	     */
+	    firstChild: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * Determines the side the `ToolbarGroup` will snap to. Either 'left' or 'right'.
+	     */
+	    float: _react2.default.PropTypes.oneOf(['left', 'right']),
+	
+	    /**
+	     * Set this to true for if the `ToolbarGroup` is the last child of `Toolbar`
+	     * to prevent setting the right gap.
+	     */
+	    lastChild: _react2.default.PropTypes.bool,
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default],
+	
+	  getDefaultProps: function getDefaultProps() {
+	    return {
+	      firstChild: false,
+	      float: 'left',
+	      lastChild: false
+	    };
+	  },
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  getTheme: function getTheme() {
+	    return this.state.muiTheme.toolbar;
+	  },
+	  getSpacing: function getSpacing() {
+	    return this.state.muiTheme.rawTheme.spacing;
+	  },
+	  getStyles: function getStyles() {
+	    var _props = this.props;
+	    var firstChild = _props.firstChild;
+	    var float = _props.float;
+	    var lastChild = _props.lastChild;
+	
+	    var marginHorizontal = this.getSpacing().desktopGutter;
+	    var marginVertical = (this.getTheme().height - this.state.muiTheme.button.height) / 2;
+	    var styles = {
+	      root: {
+	        float: float,
+	        position: 'relative',
+	        marginLeft: firstChild ? -marginHorizontal : undefined,
+	        marginRight: lastChild ? -marginHorizontal : undefined
+	      },
+	      dropDownMenu: {
+	        root: {
+	          float: 'left',
+	          color: _colors2.default.lightBlack, // removes hover color change, we want to keep it
+	          display: 'inline-block',
+	          marginRight: this.getSpacing().desktopGutter
+	        },
+	        controlBg: {
+	          backgroundColor: this.getTheme().menuHoverColor,
+	          borderRadius: 0
+	        },
+	        underline: {
+	          display: 'none'
+	        }
+	      },
+	      button: {
+	        float: 'left',
+	        margin: marginVertical + 'px ' + marginHorizontal + 'px',
+	        position: 'relative'
+	      },
+	      icon: {
+	        root: {
+	          float: 'left',
+	          cursor: 'pointer',
+	          color: this.getTheme().iconColor,
+	          lineHeight: this.getTheme().height + 'px',
+	          paddingLeft: this.getSpacing().desktopGutter
+	        },
+	        hover: {
+	          color: _colors2.default.darkBlack
+	        }
+	      },
+	      span: {
+	        float: 'left',
+	        color: this.getTheme().iconColor,
+	        lineHeight: this.getTheme().height + 'px'
+	      }
+	    };
+	
+	    return styles;
+	  },
+	  _handleMouseEnterDropDownMenu: function _handleMouseEnterDropDownMenu(e) {
+	    e.target.style.zIndex = this.getStyles().icon.hover.zIndex;
+	    e.target.style.color = this.getStyles().icon.hover.color;
+	  },
+	  _handleMouseLeaveDropDownMenu: function _handleMouseLeaveDropDownMenu(e) {
+	    e.target.style.zIndex = 'auto';
+	    e.target.style.color = this.getStyles().icon.root.color;
+	  },
+	  _handleMouseEnterFontIcon: function _handleMouseEnterFontIcon(e) {
+	    e.target.style.zIndex = this.getStyles().icon.hover.zIndex;
+	    e.target.style.color = this.getStyles().icon.hover.color;
+	  },
+	  _handleMouseLeaveFontIcon: function _handleMouseLeaveFontIcon(e) {
+	    e.target.style.zIndex = 'auto';
+	    e.target.style.color = this.getStyles().icon.root.color;
+	  },
+	  render: function render() {
+	    var _this = this;
+	
+	    var _props2 = this.props;
+	    var children = _props2.children;
+	    var className = _props2.className;
+	    var style = _props2.style;
+	
+	    var other = _objectWithoutProperties(_props2, ['children', 'className', 'style']);
+	
+	    var styles = this.getStyles();
+	    var newChildren = _react2.default.Children.map(children, function (currentChild) {
+	      if (!currentChild) {
+	        return null;
+	      }
+	      if (!currentChild.type) {
+	        return currentChild;
+	      }
+	      switch (currentChild.type.displayName) {
+	        case 'DropDownMenu':
+	          return _react2.default.cloneElement(currentChild, {
+	            style: _this.mergeStyles(styles.dropDownMenu.root, currentChild.props.style),
+	            styleControlBg: styles.dropDownMenu.controlBg,
+	            styleUnderline: styles.dropDownMenu.underline
+	          });
+	        case 'DropDownIcon':
+	          return _react2.default.cloneElement(currentChild, {
+	            style: _this.mergeStyles({ float: 'left' }, currentChild.props.style),
+	            iconStyle: styles.icon.root,
+	            onMouseEnter: _this._handleMouseEnterDropDownMenu,
+	            onMouseLeave: _this._handleMouseLeaveDropDownMenu
+	          });
+	        case 'RaisedButton':
+	        case 'FlatButton':
+	          return _react2.default.cloneElement(currentChild, {
+	            style: _this.mergeStyles(styles.button, currentChild.props.style)
+	          });
+	        case 'FontIcon':
+	          return _react2.default.cloneElement(currentChild, {
+	            style: _this.mergeStyles(styles.icon.root, currentChild.props.style),
+	            onMouseEnter: _this._handleMouseEnterFontIcon,
+	            onMouseLeave: _this._handleMouseLeaveFontIcon
+	          });
+	        case 'ToolbarSeparator':
+	        case 'ToolbarTitle':
+	          return _react2.default.cloneElement(currentChild, {
+	            style: _this.mergeStyles(styles.span, currentChild.props.style)
+	          });
+	        default:
+	          return currentChild;
+	      }
+	    }, this);
+	
+	    return _react2.default.createElement(
+	      'div',
+	      _extends({}, other, { className: className, style: this.prepareStyles(styles.root, style) }),
+	      newChildren
+	    );
+	  }
+	});
+	
+	exports.default = ToolbarGroup;
+	module.exports = exports['default'];
+
+/***/ },
+/* 345 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _stylePropable = __webpack_require__(322);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _getMuiTheme = __webpack_require__(266);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var ToolbarSeparator = _react2.default.createClass({
+	  displayName: 'ToolbarSeparator',
+	
+	  propTypes: {
+	    /**
+	     * The css class name of the root element.
+	     */
+	    className: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default],
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  getTheme: function getTheme() {
+	    return this.state.muiTheme.toolbar;
+	  },
+	  getSpacing: function getSpacing() {
+	    return this.state.muiTheme.rawTheme.spacing;
+	  },
+	  getStyles: function getStyles() {
+	    return {
+	      root: {
+	        backgroundColor: this.getTheme().separatorColor,
+	        display: 'inline-block',
+	        height: this.getSpacing().desktopGutterMore,
+	        marginLeft: this.getSpacing().desktopGutter,
+	        position: 'relative',
+	        top: (this.getTheme().height - this.getSpacing().desktopGutterMore) / 2,
+	        width: 1
+	      }
+	    };
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var className = _props.className;
+	    var style = _props.style;
+	
+	    var other = _objectWithoutProperties(_props, ['className', 'style']);
+	
+	    var styles = this.getStyles();
+	
+	    return _react2.default.createElement('span', _extends({}, other, { className: className, style: this.prepareStyles(styles.root, style) }));
+	  }
+	});
+	
+	exports.default = ToolbarSeparator;
+	module.exports = exports['default'];
+
+/***/ },
+/* 346 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _stylePropable = __webpack_require__(322);
+	
+	var _stylePropable2 = _interopRequireDefault(_stylePropable);
+	
+	var _getMuiTheme = __webpack_require__(266);
+	
+	var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var ToolbarTitle = _react2.default.createClass({
+	  displayName: 'ToolbarTitle',
+	
+	  propTypes: {
+	    /**
+	     * The css class name of the root element.
+	     */
+	    className: _react2.default.PropTypes.string,
+	
+	    /**
+	     * Override the inline-styles of the root element.
+	     */
+	    style: _react2.default.PropTypes.object,
+	
+	    /**
+	     * The text to be displayed.
+	     */
+	    text: _react2.default.PropTypes.string
+	  },
+	
+	  contextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  //for passing default theme context to children
+	  childContextTypes: {
+	    muiTheme: _react2.default.PropTypes.object
+	  },
+	
+	  mixins: [_stylePropable2.default],
+	
+	  getInitialState: function getInitialState() {
+	    return {
+	      muiTheme: this.context.muiTheme || (0, _getMuiTheme2.default)()
+	    };
+	  },
+	  getChildContext: function getChildContext() {
+	    return {
+	      muiTheme: this.state.muiTheme
+	    };
+	  },
+	
+	  //to update theme inside state whenever a new theme is passed down
+	  //from the parent / owner using context
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+	    var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+	    this.setState({ muiTheme: newMuiTheme });
+	  },
+	  getTheme: function getTheme() {
+	    return this.state.muiTheme.toolbar;
+	  },
+	  getSpacing: function getSpacing() {
+	    return this.state.muiTheme.rawTheme.spacing;
+	  },
+	  getStyles: function getStyles() {
+	    return {
+	      root: {
+	        paddingRight: this.getSpacing().desktopGutterLess,
+	        lineHeight: this.getTheme().height + 'px',
+	        fontSize: this.getTheme().titleFontSize + 'px',
+	        display: 'inline-block',
+	        position: 'relative'
+	      }
+	    };
+	  },
+	  render: function render() {
+	    var _props = this.props;
+	    var className = _props.className;
+	    var style = _props.style;
+	    var text = _props.text;
+	
+	    var other = _objectWithoutProperties(_props, ['className', 'style', 'text']);
+	
+	    var styles = this.getStyles();
+	
+	    return _react2.default.createElement(
+	      'span',
+	      _extends({}, other, { className: className, style: this.prepareStyles(styles.root, style) }),
+	      text
+	    );
+	  }
+	});
+	
+	exports.default = ToolbarTitle;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);
