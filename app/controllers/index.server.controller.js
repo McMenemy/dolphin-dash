@@ -1,3 +1,3 @@
 exports.render = function (req, res) {
-  res.render('index');
+  res.render('game');
 };
