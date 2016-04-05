@@ -31140,6 +31140,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var GameCanvas = __webpack_require__(235);
+	var Background = __webpack_require__(236);
+	var Scoreboard = __webpack_require__(237);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -31148,18 +31151,915 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
-	      React.createElement(
-	        'p',
-	        null,
-	        '\'hmmmm\''
-	      )
+	      { className: 'container' },
+	      React.createElement(Background, null),
+	      React.createElement(GameCanvas, null),
+	      React.createElement(Scoreboard, null)
 	    );
 	  }
 	
 	});
 	
 	module.exports = App;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var GameCanvas = React.createClass({
+	  displayName: 'GameCanvas',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'center-pane' },
+	      React.createElement(
+	        'p',
+	        null,
+	        'Score: '
+	      ),
+	      React.createElement(
+	        'p',
+	        { id: 'scoreboard' },
+	        '0'
+	      ),
+	      React.createElement(
+	        'p',
+	        null,
+	        'Game Status: '
+	      ),
+	      React.createElement(
+	        'p',
+	        { id: 'gamestatus', className: 'gamestatus' },
+	        'game on'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'timer' },
+	        'Timer : '
+	      ),
+	      React.createElement(
+	        'p',
+	        { id: 'timer', className: 'time-left' },
+	        '0'
+	      ),
+	      React.createElement('canvas', { id: 'game-canvas' })
+	    );
+	  }
+	
+	});
+	
+	module.exports = GameCanvas;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var PlayButton = __webpack_require__(238);
+	
+	var Background = React.createClass({
+	  displayName: 'Background',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'left-pane' },
+	      React.createElement(PlayButton, null),
+	      React.createElement(
+	        'p',
+	        { className: 'background' },
+	        'You are a microorganism trying to make your way in the big ocean by munching on smaller microorganisms that swarm the seas. Your prey will not allow their demise easily and it will take some skillful maneuvering to catch them. However, take care not to narrow you focus too much because sometimes an even larger microorganism will patrol these waters and you may become the prey not the predator... One last warning - as the night approaches differentiating between friend and foe may not be easy.'
+	      ),
+	      React.createElement(
+	        'h2',
+	        null,
+	        'Directions'
+	      ),
+	      React.createElement(
+	        'ul',
+	        null,
+	        React.createElement(
+	          'li',
+	          null,
+	          'Use WSAD to increase your speed in that direction'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'Eat the prey for points'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'Don\'t get caught by the predator'
+	        )
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Background;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	
+	var Scoreboard = React.createClass({
+	  displayName: 'Scoreboard',
+	
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'right-pane' },
+	      'scoreboard here'
+	    );
+	  }
+	
+	});
+	
+	module.exports = Scoreboard;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Game = __webpack_require__(239);
+	var GameView = __webpack_require__(240);
+	var MovingObject = __webpack_require__(241);
+	var Player = __webpack_require__(242);
+	var Predator = __webpack_require__(245);
+	var Prey = __webpack_require__(243);
+	var GameUtil = __webpack_require__(244);
+	
+	var PlayButton = React.createClass({
+	  displayName: 'PlayButton',
+	
+	  startGame: function () {
+	    var canvas = document.getElementById('game-canvas');
+	    canvas.width = 600;
+	    canvas.height = 600;
+	    var ctx = canvas.getContext('2d');
+	    this.runScripts();
+	    var game = new MicroMunch.Game();
+	
+	    new MicroMunch.GameView(game, ctx).start();
+	  },
+	
+	  runScripts: function () {
+	    // kind of a hack because originally the game logic was a bunch of IIFEs and just HTML
+	    GameUtil();
+	    MovingObject();
+	    Prey();
+	    Player();
+	    Predator();
+	    Game();
+	    GameView();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'button',
+	      { className: 'play-button', onClick: this.startGame },
+	      'play game'
+	    );
+	  }
+	
+	});
+	
+	module.exports = PlayButton;
+
+/***/ },
+/* 239 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	
+	  if (typeof window.MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  // var BG_COLOR = '#00ccff';
+	  var DIM_X = 600;
+	  var DIM_Y = 600;
+	  var PREY_ROWS = 5;
+	  var PREY_COLS = 5;
+	  var NUM_PREY = PREY_ROWS * PREY_COLS;
+	  var PLAYER_START_POS = [280, 280];
+	  var PREDATOR_START_POS = [-50, 0];
+	  var GAME_DURATION = 45000; // milliseconds
+	  var TIME_PREDATOR_ENTERS = 42000;
+	  var TIME_PREY_ENTERS = 44900;
+	  var TIME_MORE_PREY_ENTERS = 15000;
+	  var NIGHT_DURATION = 10000;
+	
+	  var Game = MicroMunch.Game = function () {
+	    this.prey = this.addPrey();
+	    this.player = new MicroMunch.Player({ pos: PLAYER_START_POS });
+	    this.predator = new MicroMunch.Predator({ pos: PREDATOR_START_POS });
+	    this.timestamp = 0;
+	    this.scoreboard = document.getElementById('scoreboard');
+	    this.score = 0;
+	    this.gamestatus = document.getElementById('gamestatus');
+	    this.startTime = new Date();
+	    this.timer = document.getElementById('timer');
+	    this.shouldGameContinue = true;
+	    this.timeRemaining = 30000;
+	  };
+	
+	  Game.MOVES = {
+	    w: [0, -1],
+	    a: [-1, 0],
+	    s: [0, 1],
+	    d: [1, 0]
+	  };
+	
+	  window.addEventListener('keydown', function (event) {
+	    var Game = this.MicroMunch.Game;
+	    var keyCode = event.keyCode;
+	    switch (keyCode) {
+	      case 68:
+	        //d
+	        Game.userMoves.d = true;
+	        break;
+	      case 83:
+	        //s
+	        Game.userMoves.s = true;
+	        break;
+	      case 65:
+	        //a
+	        Game.userMoves.a = true;
+	        break;
+	      case 87:
+	        //w
+	        Game.userMoves.w = true;
+	        break;
+	    }
+	  });
+	
+	  window.addEventListener('keyup', function (event) {
+	    var keyCode = event.keyCode;
+	    switch (keyCode) {
+	      case 68:
+	        //d
+	        Game.userMoves.d = false;
+	        break;
+	      case 83:
+	        //s
+	        Game.userMoves.s = false;
+	        break;
+	      case 65:
+	        //a
+	        Game.userMoves.a = false;
+	        break;
+	      case 87:
+	        //w
+	        Game.userMoves.w = false;
+	        break;
+	    }
+	  });
+	
+	  Game.userMoves = {
+	    d: false,
+	    s: false,
+	    w: false,
+	    a: false
+	  }, Game.prototype.takePlayerMoveInput = function () {
+	    var _this = this;
+	    Object.keys(Game.userMoves).forEach(function (k) {
+	      if (Game.userMoves[k]) {
+	        _this.player.accelerate(Game.MOVES[k]);
+	      }
+	    });
+	  }, Game.randomPos = function () {
+	    var xCoord = Math.round(Math.random() * DIM_X);
+	    var yCoord = Math.round(Math.random() * DIM_Y);
+	
+	    return [xCoord, yCoord];
+	  }, Game.prototype.addPrey = function () {
+	    var prey = [];
+	    var xCoord = 20;
+	    var yCoord = 250;
+	    for (var r = 0; r < PREY_ROWS; r++) {
+	      xCoord += 25;
+	      yCoord = 250;
+	      for (var c = 0; c < PREY_COLS; c++) {
+	        yCoord += 25;
+	        var newPrey = new MicroMunch.Prey({ pos: [xCoord, yCoord] });
+	        prey.push(newPrey);
+	      }
+	    }
+	
+	    return prey;
+	  };
+	
+	  Game.prototype.getLightSetting = function () {
+	    var timePassed = GAME_DURATION - this.timeRemaining;
+	    var transparency = (timePassed / (GAME_DURATION - NIGHT_DURATION)).toFixed(2);
+	    return 'rgba(0, 0, 0,' + transparency + ')';
+	  };
+	
+	  Game.prototype.draw = function (ctx) {
+	    ctx.clearRect(0, 0, DIM_X, DIM_Y);
+	    ctx.fillStyle = this.getLightSetting();
+	    ctx.fillRect(0, 0, DIM_X, DIM_Y);
+	    this.prey.forEach(function (prey) {
+	      prey.draw(ctx);
+	
+	      // ctx.drawImage('prey.png', prey.pos[0], prey.pos[1]);
+	    });
+	
+	    this.predator.draw(ctx);
+	    this.player.draw(ctx);
+	  };
+	
+	  Game.prototype.finalDraw = function (ctx) {
+	    ctx.clearRect(0, 0, DIM_X, DIM_Y);
+	    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
+	    ctx.fillRect(0, 0, DIM_X, DIM_Y);
+	    this.prey.forEach(function (prey) {
+	      prey.draw(ctx);
+	
+	      // ctx.drawImage('prey.png', prey.pos[0], prey.pos[1]);
+	    });
+	
+	    this.predator.draw(ctx);
+	    this.player.draw(ctx);
+	  };
+	
+	  Game.prototype.step = function (delta) {
+	    this.timestamp += 1;
+	    this.takePlayerMoveInput();
+	    this.moveObjects(delta);
+	    this.schoolPrey();
+	
+	    // if (this.shouldMorePreyEnter()) {
+	    //   this.prey.concat(this.addPrey());
+	    // }
+	
+	    this.huntPrey();
+	    this.isGameOver();
+	  };
+	
+	  Game.prototype.gettimeRemaining = function () {
+	    var currentTime = new Date();
+	    return GAME_DURATION - (currentTime - this.startTime);
+	  };
+	
+	  Game.prototype.isGameOver = function () {
+	    this.timeRemaining = this.gettimeRemaining();
+	    this.timer.innerHTML = Math.round(this.timeRemaining / 1000);
+	    if (this.timeRemaining > GAME_DURATION) {
+	      this.gamestatus.innerHTML = 'time up';
+	      this.shouldGameContinue = false;
+	      return true;
+	    }
+	
+	    if (this.player.isEaten) {
+	      this.gamestatus.innerHTML = 'you\'ve been eaten';
+	      this.shouldGameContinue = false;
+	      return true;
+	    }
+	
+	    return false;
+	  };
+	
+	  Game.prototype.hasPredatorEntered = function () {
+	    return this.timeRemaining <= TIME_PREDATOR_ENTERS;
+	  };
+	
+	  Game.prototype.shouldMorePreyEnter = function () {
+	    return this.timeRemaining <= TIME_MORE_PREY_ENTERS;
+	  };
+	
+	  Game.prototype.arePreyReady = function () {
+	    return this.timeRemaining <= TIME_PREY_ENTERS;
+	  };
+	
+	  Game.prototype.moveObjects = function (timeDelta) {
+	    var _this = this;
+	    this.player.move(timeDelta, DIM_X, DIM_Y);
+	
+	    if (this.arePreyReady()) {
+	      this.prey.forEach(function (prey) {
+	        prey.move(timeDelta, _this.timestamp, DIM_X, DIM_Y);
+	      });
+	    }
+	
+	    if (this.hasPredatorEntered()) {
+	      this.predator.move(timeDelta, DIM_X, DIM_Y);
+	    }
+	  };
+	
+	  Game.isOutOfBotBounds = function (yCoord, radius) {
+	    return yCoord > DIM_X;
+	  };
+	
+	  Game.isOutOfTopBounds = function (yCoord, radius) {
+	    return yCoord < 0;
+	  };
+	
+	  Game.isOutOfRightBounds = function (xCoord, radius) {
+	    return xCoord > DIM_Y;
+	  };
+	
+	  Game.isOutOfLeftBounds = function (xCoord, radius) {
+	    return xCoord < 0;
+	  };
+	
+	  Game.prototype.schoolPrey = function () {
+	    var _this = this;
+	    var player = this.player;
+	    var predator = this.predator;
+	    var eatenPrey = [];
+	
+	    for (var f1 = 0; f1 < this.prey.length; f1++) {
+	      var prey = this.prey[f1];
+	      if (prey.isEaten(player, player.radius)) {
+	        eatenPrey.push(f1);
+	      }
+	
+	      if (prey.isNearPlayer(player)) {
+	        prey.moveAwayFromPredator(player);
+	      }
+	
+	      if (prey.isNearPlayer(predator)) {
+	        prey.moveAwayFromPredator(predator);
+	      }
+	
+	      for (var f2 = f1 + 1; f2 < this.prey.length; f2++) {
+	        var otherPrey = this.prey[f2];
+	
+	        if (prey.isNearOtherPrey(otherPrey)) {
+	          prey.moveWithMostRecentlyChangedPrey(otherPrey);
+	        }
+	      }
+	
+	      var survivingPrey = [];
+	      this.prey.forEach(function (prey, i) {
+	        if (!eatenPrey.includes(i)) {
+	          survivingPrey.push(prey);
+	        }
+	      });
+	
+	      this.score = NUM_PREY - this.prey.length;
+	      this.scoreboard.innerHTML = this.score;
+	      this.prey = survivingPrey.slice(0);
+	    }
+	
+	    Game.prototype.huntPrey = function () {
+	      var predator = this.predator;
+	      var player = this.player;
+	
+	      if (predator.isNearPlayer(player)) {
+	        predator.chasePrey(player);
+	      }
+	
+	      if (predator.isTouchingPlayer(player)) {
+	        player.isEaten = true;
+	      }
+	    };
+	  };
+	};
+
+/***/ },
+/* 240 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	
+	  if (typeof window.MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  var GameView = MicroMunch.GameView = function (game, ctx) {
+	    this.ctx = ctx;
+	    this.game = game;
+	  };
+	
+	  GameView.prototype.start = function () {
+	    this.lastTime = new Date();
+	    requestAnimationFrame(this.animate.bind(this));
+	  };
+	
+	  GameView.prototype.animate = function () {
+	    var currentTime = new Date();
+	    var timeDelta = currentTime - this.lastTime;
+	
+	    this.game.step(timeDelta);
+	    this.game.draw(this.ctx);
+	    this.lastTime = currentTime;
+	
+	    if (this.game.shouldGameContinue) {
+	      requestAnimationFrame(this.animate.bind(this));
+	    } else {
+	      console.log('game over');
+	      requestAnimationFrame(this.finalAnimate.bind(this));
+	    }
+	  };
+	
+	  GameView.prototype.finalAnimate = function () {
+	    this.game.finalDraw(this.ctx);
+	  };
+	};
+
+/***/ },
+/* 241 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	  if (typeof MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  var MovingObject = MicroMunch.MovingObject = function (options) {
+	    this.pos = options.pos;
+	    this.vel = options.vel;
+	    this.radius = options.radius;
+	    this.color = options.color;
+	  };
+	
+	  MovingObject.prototype.draw = function (ctx) {
+	    ctx.fillStyle = this.color;
+	
+	    ctx.beginPath();
+	    ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true);
+	
+	    ctx.fill();
+	  };
+	
+	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
+	  MovingObject.prototype.move = function (timeDelta) {
+	    var timeDelta = timeDelta || 1;
+	    var velocityScale = timeDelta / NORMAL_FRAME_TIME_DELTA;
+	
+	    if (MicroMunch.Game.isOutOfTopBounds(this.pos[1], this.radius)) {
+	      this.vel[1] = Math.abs(this.vel[1]);
+	    }
+	
+	    if (MicroMunch.Game.isOutOfBotBounds(this.pos[1], this.radius)) {
+	      this.vel[1] = Math.abs(this.vel[1]) * -1;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfLeftBounds(this.pos[0], this.radius)) {
+	      this.vel[0] = Math.abs(this.vel[0]);
+	    }
+	
+	    if (MicroMunch.Game.isOutOfRightBounds(this.pos[0], this.radius)) {
+	      this.vel[0] = Math.abs(this.vel[0]) * -1;
+	    }
+	
+	    var moveX = this.vel[0] * velocityScale;
+	    var moveY = this.vel[1] * velocityScale;
+	
+	    this.pos = [this.pos[0] + moveX, this.pos[1] + moveY];
+	  };
+	};
+
+/***/ },
+/* 242 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	
+	  if (typeof window.MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  var RADIUS = 25;
+	  var COLOR = '#777';
+	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
+	  var PLAYER_MAX_VEL = 3;
+	
+	  var Player = MicroMunch.Player = function (options) {
+	    options.pos = options.pos;
+	    options.vel = [0, 0];
+	    options.radius = RADIUS;
+	    options.color = COLOR;
+	    this.isEaten = false;
+	
+	    MicroMunch.MovingObject.call(this, options);
+	  };
+	
+	  MicroMunch.Util.inherits(Player, MicroMunch.MovingObject);
+	
+	  Player.prototype.move = function (timeDelta, DIM_X, DIM_Y) {
+	    timeDelta = timeDelta || 1;
+	    var velocityScale = timeDelta / NORMAL_FRAME_TIME_DELTA;
+	
+	    if (MicroMunch.Game.isOutOfTopBounds(this.pos[1], this.radius)) {
+	      this.pos[1] = DIM_Y;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfBotBounds(this.pos[1], this.radius)) {
+	      this.pos[1] = 0;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfLeftBounds(this.pos[0], this.radius)) {
+	      this.pos[0] = DIM_X;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfRightBounds(this.pos[0], this.radius)) {
+	      this.pos[0] = 0;
+	    }
+	
+	    this.enforceMaxVel();
+	
+	    var moveX = this.vel[0] * velocityScale;
+	    var moveY = this.vel[1] * velocityScale;
+	
+	    this.pos = [this.pos[0] + moveX, this.pos[1] + moveY];
+	  };
+	
+	  Player.prototype.enforceMaxVel = function () {
+	    if (Math.abs(this.vel[0]) > PLAYER_MAX_VEL) {
+	      var direction = this.vel[0] / Math.abs(this.vel[0]);
+	      this.vel[0] = PLAYER_MAX_VEL * direction;
+	    }
+	
+	    if (Math.abs(this.vel[1]) > PLAYER_MAX_VEL) {
+	      var direction = this.vel[1] / Math.abs(this.vel[1]);
+	      this.vel[1] = PLAYER_MAX_VEL * direction;
+	    }
+	  }, Player.prototype.accelerate = function (acceleration) {
+	    this.vel[0] += acceleration[0];
+	    this.vel[1] += acceleration[1];
+	  };
+	};
+
+/***/ },
+/* 243 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	
+	  if (typeof window.MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  var RADIUS = 7;
+	  var COLOR = '#ff9900';
+	  var PREY_VEL = 1.8;
+	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
+	  var PREY_TO_FIST_DETECTION_RADIUS = 20;
+	  var PREY_TO_PLAYER_DETECTION_RADIUS = 100;
+	
+	  var Prey = MicroMunch.Prey = function (options) {
+	    options.pos = options.pos;
+	    options.vel = Prey.preyVel();
+	    options.radius = RADIUS;
+	    options.color = COLOR;
+	    this.changeTimeStamp = 0;
+	    this.prevVel = Prey.preyVel();
+	
+	    MicroMunch.MovingObject.call(this, options);
+	  };
+	
+	  Prey.preyVel = function () {
+	    var xVel = 0;
+	    var yVel = PREY_VEL;
+	
+	    return [xVel, yVel];
+	  };
+	
+	  MicroMunch.Util.inherits(Prey, MicroMunch.MovingObject);
+	
+	  Prey.prototype.isVelChanged = function (prevVel) {
+	    return prevVel[0] !== this.vel[0] || prevVel[1] !== this.vel[1];
+	  };
+	
+	  Prey.prototype.switchColor = function () {
+	    if (this.color === '#777') {
+	      this.color = '#fff';
+	    } else {
+	      this.color = '#777';
+	    }
+	  };
+	
+	  Prey.prototype.move = function (timeDelta, timestamp, DIM_X, DIM_Y) {
+	    var timeDelta = timeDelta || 1;
+	    var velocityScale = timeDelta / NORMAL_FRAME_TIME_DELTA;
+	
+	    if (MicroMunch.Game.isOutOfTopBounds(this.pos[1], this.radius)) {
+	      // this.vel[1] = Math.abs(this.vel[1]);
+	      this.pos[1] = DIM_Y;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfBotBounds(this.pos[1], this.radius)) {
+	      // this.vel[1] = Math.abs(this.vel[1]) * -1;
+	      this.pos[1] = 0;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfLeftBounds(this.pos[0], this.radius)) {
+	      // this.vel[0] = Math.abs(this.vel[0]);
+	      this.pos[0] = DIM_X;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfRightBounds(this.pos[0], this.radius)) {
+	      // this.vel[0] = Math.abs(this.vel[0]) * -1;
+	      this.pos[0] = 0;
+	    }
+	
+	    if (this.isVelChanged(this.prevVel)) {
+	      this.changeTimeStamp = timestamp;
+	      this.prevVel = this.vel.slice(0);
+	    }
+	
+	    var moveX = this.vel[0] * velocityScale;
+	    var moveY = this.vel[1] * velocityScale;
+	
+	    this.pos = [this.pos[0] + moveX, this.pos[1] + moveY];
+	  };
+	
+	  Prey.prototype.isNearOtherPrey = function (otherPrey) {
+	    return MicroMunch.Util.distance(this.pos, otherPrey.pos) < PREY_TO_FIST_DETECTION_RADIUS;
+	  };
+	
+	  Prey.prototype.isNearPlayer = function (player) {
+	    return MicroMunch.Util.distance(this.pos, player.pos) < PREY_TO_PLAYER_DETECTION_RADIUS;
+	  };
+	
+	  Prey.prototype.moveWithMostRecentlyChangedPrey = function (otherPrey) {
+	    if (this.changeTimeStamp > otherPrey.changeTimeStamp) {
+	      otherPrey.vel = this.vel;
+	    } else if (this.changeTimeStamp < otherPrey.changeTimeStamp) {
+	      this.vel = otherPrey.vel;
+	    }
+	  };
+	
+	  Prey.prototype.moveAwayFromPredator = function (predator) {
+	    this.vel = MicroMunch.Util.calcNormalVector(this.vel, this.pos, predator.vel, predator.pos, 'away');
+	  };
+	
+	  Prey.prototype.isEaten = function (player, dolphRadius) {
+	    var distFromDolph = MicroMunch.Util.distance(this.pos, player.pos);
+	    return distFromDolph <= dolphRadius;
+	  };
+	};
+
+/***/ },
+/* 244 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	  if (typeof window.MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  var Util = MicroMunch.Util = {};
+	
+	  Util.inherits = function (ChildClass, ParentClass) {
+	    function Surrogate() {
+	      this.constructor = ChildClass;
+	    };
+	
+	    Surrogate.prototype = ParentClass.prototype;
+	    ChildClass.prototype = new Surrogate();
+	  };
+	
+	  Util.distance = function (pos1, pos2) {
+	    return Math.sqrt(Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2));
+	  };
+	
+	  Util.isVectorsParallel = function (predatorVec, preyVec) {
+	    var predatorMag = Math.sqrt(Math.pow(predatorVec[0], 2) + Math.pow(predatorVec[1], 2));
+	    var preyMag = Math.sqrt(Math.pow(preyVec[0], 2) + Math.pow(preyVec[1], 2));
+	
+	    var predatorUnitVec = [Math.abs(predatorVec[1] / predatorMag), Math.abs(predatorVec[0] / predatorMag)];
+	    var preyUnitVec = [Math.abs(preyVec[1] / preyMag), Math.abs(preyVec[0] / preyMag)];
+	
+	    return predatorUnitVec[0] === preyUnitVec[0] && predatorUnitVec[1] === preyUnitVec[1];
+	  };
+	
+	  Util.calcVectorMag = function (vector) {
+	    return Math.sqrt(Math.pow(vector[0], 2) + Math.pow(vector[1], 2));
+	  }, Util.calcUnitVector = function (vector) {
+	    var vectorMag = Util.calcVectorMag(vector);
+	
+	    return [vector[0] / vectorMag, vector[1] / vectorMag];
+	  }, Util.calcDirectionVector = function (unitVec, mag) {
+	    return [unitVec[0] * mag, unitVec[1] * mag];
+	  };
+	
+	  Util.calcPredatorTowardVec = function (predatorVec, predatorPos, preyVec, preyPos) {
+	    var predatorMag = Util.calcVectorMag(predatorVec);
+	
+	    var connectVec = [preyPos[0] - predatorPos[0], preyPos[1] - predatorPos[1]];
+	    var connectUnitVect = Util.calcUnitVector(connectVec);
+	
+	    return Util.calcDirectionVector(connectUnitVect, predatorMag);
+	  };
+	
+	  Util.calcNormalVector = function (preyVec, preyPos, dolphVec, dolphPos, direction) {
+	    var dolphVectMag = Math.sqrt(Math.pow(dolphVec[0], 2) + Math.pow(dolphVec[1], 2));
+	
+	    var unitNormalVectorOne = [dolphVec[1] / dolphVectMag, -1 * (dolphVec[0] / dolphVectMag)];
+	    var unitNormalVectorTwo = [-1 * (dolphVec[1] / dolphVectMag), dolphVec[0] / dolphVectMag];
+	
+	    var preyPosOne = [preyPos[0] + unitNormalVectorOne[0], preyPos[1] + unitNormalVectorOne[1]];
+	    var preyPosTwo = [preyPos[0] + unitNormalVectorTwo[0], preyPos[1] + unitNormalVectorTwo[1]];
+	
+	    var distOne = Util.distance(preyPosOne, dolphPos);
+	    var distTwo = Util.distance(preyPosTwo, dolphPos);
+	
+	    var unitNormalVector = [NaN, NaN];
+	    if (distOne >= distTwo && direction === 'away') {
+	      unitNormalVector = unitNormalVectorOne;
+	    } else if (distTwo >= distOne && direction === 'away') {
+	      unitNormalVector = unitNormalVectorTwo;
+	    } else if (distOne <= distTwo && direction === 'toward') {
+	      unitNormalVector = unitNormalVectorOne;
+	    } else if (distTwo <= distOne && direction === 'toward') {
+	      unitNormalVector = unitNormalVectorTwo;
+	    }
+	
+	    var preyVecMag = Math.sqrt(Math.pow(preyVec[0], 2) + Math.pow(preyVec[1], 2));
+	
+	    var correctVector = [unitNormalVector[0] * preyVecMag, unitNormalVector[1] * preyVecMag];
+	
+	    // correction for when user is not moving
+	    if (isNaN(unitNormalVector[0]) || isNaN(unitNormalVector[1])) {
+	      return preyVec;
+	    } else {
+	      return correctVector;
+	    }
+	  };
+	};
+
+/***/ },
+/* 245 */
+/***/ function(module, exports) {
+
+	module.exports = function () {
+	
+	  if (typeof window.MicroMunch === 'undefined') {
+	    window.MicroMunch = {};
+	  }
+	
+	  var RADIUS = 50;
+	  var COLOR = '#000';
+	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
+	  var MAX_VEL = 2.3;
+	  var PREDATORTO_PREY_DETECTION_RADIUS = 400;
+	
+	  var Predator = MicroMunch.Predator = function (options) {
+	    options.pos = options.pos;
+	    options.vel = [MAX_VEL, 0];
+	    options.radius = RADIUS;
+	    options.color = COLOR;
+	
+	    MicroMunch.MovingObject.call(this, options);
+	  };
+	
+	  MicroMunch.Util.inherits(Predator, MicroMunch.MovingObject);
+	
+	  Predator.prototype.move = function (timeDelta, DIM_X, DIM_Y) {
+	    timeDelta = timeDelta || 1;
+	    var velocityScale = timeDelta / NORMAL_FRAME_TIME_DELTA;
+	
+	    if (MicroMunch.Game.isOutOfTopBounds(this.pos[1], this.radius)) {
+	      this.pos[1] = DIM_Y;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfBotBounds(this.pos[1], this.radius)) {
+	      this.pos[1] = 0;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfLeftBounds(this.pos[0], this.radius)) {
+	      this.pos[0] = DIM_X;
+	    }
+	
+	    if (MicroMunch.Game.isOutOfRightBounds(this.pos[0], this.radius)) {
+	      this.pos[0] = 0;
+	    }
+	
+	    var moveX = this.vel[0] * velocityScale;
+	    var moveY = this.vel[1] * velocityScale;
+	
+	    this.pos = [this.pos[0] + moveX, this.pos[1] + moveY];
+	  };
+	
+	  Predator.prototype.isNearPlayer = function (player) {
+	    return MicroMunch.Util.distance(this.pos, player.pos) < PREDATORTO_PREY_DETECTION_RADIUS;
+	  };
+	
+	  Predator.prototype.isTouchingPlayer = function (player) {
+	    return MicroMunch.Util.distance(this.pos, player.pos) < RADIUS + player.radius;
+	  };
+	
+	  Predator.prototype.chasePrey = function (player) {
+	    this.vel = MicroMunch.Util.calcPredatorTowardVec(this.vel, this.pos, player.vel, player.pos);
+	  };
+	};
 
 /***/ }
 /******/ ]);

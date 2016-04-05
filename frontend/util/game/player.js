@@ -1,6 +1,4 @@
-'use strict';
-
-(function () {
+module.exports = function () {
 
   if (typeof window.MicroMunch === 'undefined') {
     window.MicroMunch = {};
@@ -68,4 +66,4 @@
     this.vel[1] += acceleration[1];
   };
 
-})();
+};

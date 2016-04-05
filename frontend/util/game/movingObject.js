@@ -1,6 +1,4 @@
-'use strict';
-
-(function () {
+module.exports = function () {
   if (typeof MicroMunch === 'undefined') {
     window.MicroMunch = {};
   }
@@ -49,4 +47,4 @@
 
     this.pos = [this.pos[0] + moveX, this.pos[1] + moveY];
   };
-})();
+};

@@ -1,6 +1,4 @@
-'use strict';
-
-(function () {
+module.exports = function () {
 
   if (typeof window.MicroMunch === 'undefined') {
     window.MicroMunch = {};
@@ -61,4 +59,4 @@
     this.vel = MicroMunch.Util.calcPredatorTowardVec(this.vel, this.pos, player.vel, player.pos);
   };
 
-})();
+};

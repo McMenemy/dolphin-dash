@@ -1,6 +1,4 @@
-'use strict';
-
-(function () {
+module.exports = function () {
 
   if (typeof window.MicroMunch === 'undefined') {
     window.MicroMunch = {};
@@ -105,4 +103,4 @@
     return distFromDolph <= dolphRadius;
   };
 
-})();
+};
