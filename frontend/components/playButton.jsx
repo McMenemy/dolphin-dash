@@ -6,6 +6,7 @@ var Player = require('../util/game/player');
 var Predator = require('../util/game/predator');
 var Prey = require('../util/game/prey');
 var GameUtil = require('../util/game/util');
+var RaisedButton = require('material-ui/lib/raised-button');
 
 var PlayButton = React.createClass({
   startGame: function () {
@@ -32,7 +33,13 @@ var PlayButton = React.createClass({
 
   render: function () {
     return (
-      <button className="play-button" onClick={this.startGame}>play game</button>
+      <RaisedButton
+        label="Play Game"
+        style={{
+          margin: '52px 0px 0px 0px',
+        }}
+        onMouseDown={this.startGame}
+      />
     );
   },
 
