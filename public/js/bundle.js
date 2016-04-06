@@ -31151,7 +31151,7 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'container' },
 	      React.createElement(Background, null),
 	      React.createElement(GameCanvas, null)
 	    );
@@ -31216,9 +31216,12 @@
 	      Paper,
 	      {
 	        style: {
-	          width: '325px',
-	          float: 'left',
-	          padding: '10px'
+	          width: '350px',
+	          display: 'inline-block',
+	          padding: '10px',
+	          verticalAlign: 'top',
+	          margin: '108px 25px 0px 0px',
+	          backgroundColor: '#C5CAE9'
 	        } },
 	      React.createElement(
 	        'p',
@@ -31231,23 +31234,19 @@
 	        'Directions'
 	      ),
 	      React.createElement(
-	        'ul',
-	        null,
-	        React.createElement(
-	          'li',
-	          null,
-	          'Use WSAD to increase your speed in that direction'
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          'Eat the prey for points'
-	        ),
-	        React.createElement(
-	          'li',
-	          null,
-	          'Don\'t get caught by the predator'
-	        )
+	        'p',
+	        { className: 'directions-item' },
+	        'Use WSAD to move'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'Catch small dots'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'Avoid large dot'
 	      )
 	    );
 	  }
@@ -31279,48 +31278,7 @@
 	module.exports = Scoreboard;
 
 /***/ },
-/* 238 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var PlayButton = React.createClass({
-	  displayName: 'PlayButton',
-	
-	  startGame: function () {
-	    var canvas = document.getElementById('game-canvas');
-	    canvas.width = 600;
-	    canvas.height = 600;
-	    var ctx = canvas.getContext('2d');
-	    this.runScripts();
-	    var game = new MicroMunch.Game();
-	
-	    new MicroMunch.GameView(game, ctx).start();
-	  },
-	
-	  runScripts: function () {
-	    // kind of a hack because originally the game logic was a bunch of IIFEs and just HTML
-	    GameUtil();
-	    MovingObject();
-	    Prey();
-	    Player();
-	    Predator();
-	    Game();
-	    GameView();
-	  },
-	
-	  render: function () {
-	    return React.createElement(RaisedButton, {
-	      label: 'Play Game',
-	      onMouseDown: this.startGame
-	    });
-	  }
-	
-	});
-	
-	module.exports = PlayButton;
-
-/***/ },
+/* 238 */,
 /* 239 */
 /***/ function(module, exports) {
 
@@ -39554,7 +39512,6 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var PlayButton = __webpack_require__(238);
 	var Toolbar = __webpack_require__(343);
 	var ToolbarGroup = __webpack_require__(344);
 	var Separator = __webpack_require__(345);
@@ -39597,26 +39554,59 @@
 	  render: function () {
 	    return React.createElement(
 	      Toolbar,
-	      null,
+	      {
+	        style: {
+	          backgroundColor: '#3F51B5'
+	        } },
 	      React.createElement(
 	        ToolbarGroup,
 	        null,
-	        React.createElement(ToolbarTitle, { text: 'Score' }),
-	        React.createElement(ToolbarTitle, { id: 'scoreboard', text: '0' }),
-	        React.createElement(Separator, null)
+	        React.createElement(ToolbarTitle, {
+	          text: 'Score',
+	          style: {
+	            color: '#FFFFFF'
+	          }
+	        }),
+	        React.createElement(ToolbarTitle, {
+	          id: 'scoreboard',
+	          text: '0',
+	          style: {
+	            color: '#FFFFFF'
+	          }
+	        }),
+	        React.createElement(Separator, { style: {
+	            backgroundColor: '#FFFFFF',
+	            margin: '0px 10px 0px 0px'
+	          } })
 	      ),
 	      React.createElement(
 	        ToolbarGroup,
 	        null,
-	        React.createElement(ToolbarTitle, { text: 'Time' }),
-	        React.createElement(ToolbarTitle, { id: 'timer', text: '45' })
+	        React.createElement(ToolbarTitle, {
+	          text: 'Time',
+	          style: {
+	            color: '#FFFFFF'
+	          }
+	        }),
+	        React.createElement(ToolbarTitle, {
+	          id: 'timer',
+	          text: '45',
+	          style: {
+	            color: '#FFFFFF'
+	          }
+	        }),
+	        React.createElement(Separator, { style: {
+	            backgroundColor: '#FFFFFF'
+	          } })
 	      ),
 	      React.createElement(
 	        ToolbarGroup,
 	        null,
 	        React.createElement(RaisedButton, {
 	          label: 'Play Game',
-	          onMouseDown: this.startGame
+	          onMouseDown: this.startGame,
+	          backgroundColor: '#29B6F6',
+	          labelColor: '#FFFFFF'
 	        })
 	      )
 	    );

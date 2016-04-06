@@ -7,9 +7,12 @@ var Background = React.createClass({
     return (
       <Paper
         style={{
-          width: '325px',
-          float: 'left',
+          width: '350px',
+          display: 'inline-block',
           padding: '10px',
+          verticalAlign: 'top',
+          margin: '108px 25px 0px 0px',
+          backgroundColor: '#C5CAE9',
         }}>
 
         <p className='background'>
@@ -17,11 +20,9 @@ var Background = React.createClass({
         </p>
 
         <h2>Directions</h2>
-          <ul>
-            <li>Use WSAD to increase your speed in that direction</li>
-            <li>Eat the prey for points</li>
-            <li>Don't get caught by the predator</li>
-          </ul>
+          <p className="directions-item">Use WSAD to move</p>
+          <p className="directions-item">Catch small dots</p>
+          <p className="directions-item">Avoid large dot</p>
       </Paper>
     );
   },

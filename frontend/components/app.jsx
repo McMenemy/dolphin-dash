@@ -7,7 +7,7 @@ var App = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div className="container">
         <Background />
         <GameCanvas />
       </div>

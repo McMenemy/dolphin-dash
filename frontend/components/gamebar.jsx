@@ -1,5 +1,4 @@
 var React = require('react');
-var PlayButton = require('../components/playButton');
 var Toolbar = require('material-ui/lib/toolbar/toolbar');
 var ToolbarGroup = require('material-ui/lib/toolbar/toolbar-group');
 var Separator = require('material-ui/lib/toolbar/toolbar-separator');
@@ -39,22 +38,55 @@ var GameBar = React.createClass({
 
   render: function () {
     return (
-      <Toolbar>
+      <Toolbar
+        style={{
+          backgroundColor: '#3F51B5',
+        }}>
         <ToolbarGroup>
-          <ToolbarTitle text="Score" />
-          <ToolbarTitle id="scoreboard" text="0" />
-          <Separator />
+          <ToolbarTitle
+            text="Score"
+            style={{
+              color: '#FFFFFF',
+            }}
+          />
+          <ToolbarTitle
+            id="scoreboard"
+            text="0"
+            style={{
+              color: '#FFFFFF',
+            }}
+          />
+        <Separator style={{
+            backgroundColor: '#FFFFFF',
+            margin: '0px 10px 0px 0px',
+          }}/>
         </ToolbarGroup>
 
         <ToolbarGroup>
-          <ToolbarTitle text="Time" />
-          <ToolbarTitle id="timer" text="45" />
+          <ToolbarTitle
+            text="Time"
+            style={{
+              color: '#FFFFFF',
+            }}
+          />
+          <ToolbarTitle
+            id="timer"
+            text="45"
+            style={{
+              color: '#FFFFFF',
+            }}
+          />
+          <Separator style={{
+              backgroundColor: '#FFFFFF',
+            }}/>
         </ToolbarGroup>
 
         <ToolbarGroup>
           <RaisedButton
             label="Play Game"
             onMouseDown={this.startGame}
+            backgroundColor='#29B6F6'
+            labelColor='#FFFFFF'
           />
         </ToolbarGroup>
 
