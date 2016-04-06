@@ -1,3 +1,4 @@
 module.exports = {
-  // dev config options
+  db: 'mongodb://localhost/micro-munch',
+  sessionSecret: 'devSecret',
 };
