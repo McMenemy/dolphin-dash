@@ -4,7 +4,7 @@ module.exports = function () {
     window.MicroMunch = {};
   }
 
-  var RADIUS = 25;
+  var RADIUS = 28;
   var COLOR = '#777';
   var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
   var PLAYER_MAX_VEL = 3;

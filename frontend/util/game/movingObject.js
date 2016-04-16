@@ -8,17 +8,20 @@ module.exports = function () {
     this.vel = options.vel;
     this.radius = options.radius;
     this.color = options.color;
+    // this.img = img;
   };
 
-  MovingObject.prototype.draw = function (ctx) {
-    ctx.fillStyle = this.color;
+  MovingObject.prototype.draw = function (ctx, img) {
+    // ctx.fillStyle = this.color;
+    //
+    // ctx.beginPath();
+    // ctx.arc(
+    //   this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
+    // );
 
-    ctx.beginPath();
-    ctx.arc(
-      this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
-    );
-
-    ctx.fill();
+    // ctx.fill();
+    _this = this;
+    ctx.drawImage(img, _this.pos[0] - this.radius, _this.pos[1] - this.radius, 2 * _this.radius, 2 * _this.radius);
   };
 
   var NORMAL_FRAME_TIME_DELTA = 1000 / 60;

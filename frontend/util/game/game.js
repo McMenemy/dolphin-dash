@@ -122,18 +122,22 @@ module.exports = function () {
     return 'rgba(0, 0, 0,' + transparency + ')';
   };
 
-  Game.prototype.draw = function (ctx) {
+  Game.prototype.draw = function (ctx, images) {
+    var playerImg = images[0];
+    var preyImg = images[1];
+    var predatorImg = images[2];
+
     ctx.clearRect(0, 0, DIM_X, DIM_Y);
     ctx.fillStyle = this.getLightSetting();
     ctx.fillRect(0, 0, DIM_X, DIM_Y);
     this.prey.forEach(function (prey) {
-      prey.draw(ctx);
+      prey.draw(ctx, preyImg);
 
       // ctx.drawImage('prey.png', prey.pos[0], prey.pos[1]);
     });
 
-    this.predator.draw(ctx);
-    this.player.draw(ctx);
+    this.predator.draw(ctx, predatorImg);
+    this.player.draw(ctx, playerImg);
   };
 
   Game.prototype.finalDraw = function (ctx) {

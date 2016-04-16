@@ -24,6 +24,7 @@ module.exports = function () {
   app.set('view engine', 'ejs');
 
   require('../app/routes/index.server.routes.js')(app);
+  // require('../app/routes/highscores');
 
   app.use(express.static('./public'));
 

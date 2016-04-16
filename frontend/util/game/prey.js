@@ -4,7 +4,7 @@ module.exports = function () {
     window.MicroMunch = {};
   }
 
-  var RADIUS = 7;
+  var RADIUS = 8;
   var COLOR = '#ff9900';
   var PREY_VEL = 1.8;
   var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
@@ -16,6 +16,7 @@ module.exports = function () {
     options.vel = Prey.preyVel();
     options.radius = RADIUS;
     options.color = COLOR;
+    // options.img = '../../public/prey.png';
     this.changeTimeStamp = 0;
     this.prevVel = Prey.preyVel();
 

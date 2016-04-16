@@ -39512,18 +39512,22 @@
 	    return 'rgba(0, 0, 0,' + transparency + ')';
 	  };
 	
-	  Game.prototype.draw = function (ctx) {
+	  Game.prototype.draw = function (ctx, images) {
+	    var playerImg = images[0];
+	    var preyImg = images[1];
+	    var predatorImg = images[2];
+	
 	    ctx.clearRect(0, 0, DIM_X, DIM_Y);
 	    ctx.fillStyle = this.getLightSetting();
 	    ctx.fillRect(0, 0, DIM_X, DIM_Y);
 	    this.prey.forEach(function (prey) {
-	      prey.draw(ctx);
+	      prey.draw(ctx, preyImg);
 	
 	      // ctx.drawImage('prey.png', prey.pos[0], prey.pos[1]);
 	    });
 	
-	    this.predator.draw(ctx);
-	    this.player.draw(ctx);
+	    this.predator.draw(ctx, predatorImg);
+	    this.player.draw(ctx, playerImg);
 	  };
 	
 	  Game.prototype.finalDraw = function (ctx) {
@@ -39687,6 +39691,8 @@
 	
 	  var GameView = MicroMunch.GameView = function (game, ctx) {
 	    this.ctx = ctx;
+	    this.images = this.loadImages(['img/player.png', 'img/prey.png', 'img/predator.png']);
+	    // this.images = this.loadImages(['http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335', 'http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335', 'http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335']);
 	    this.game = game;
 	  };
 	
@@ -39700,7 +39706,7 @@
 	    var timeDelta = currentTime - this.lastTime;
 	
 	    this.game.step(timeDelta);
-	    this.game.draw(this.ctx);
+	    this.game.draw(this.ctx, this.images);
 	    this.lastTime = currentTime;
 	
 	    if (this.game.shouldGameContinue) {
@@ -39713,6 +39719,30 @@
 	
 	  GameView.prototype.finalAnimate = function () {
 	    this.game.finalDraw(this.ctx);
+	  };
+	
+	  GameView.prototype.loadImages = function (imagefiles) {
+	    loadcount = 0;
+	    loadtotal = imagefiles.length;
+	    preloaded = false;
+	
+	    var loadedimages = [];
+	    for (var i = 0; i < imagefiles.length; i++) {
+	      var image = new Image();
+	
+	      image.onload = function () {
+	        loadcount++;
+	        if (loadcount == loadtotal) {
+	          preloaded = true;
+	        }
+	      };
+	
+	      image.src = imagefiles[i];
+	
+	      loadedimages[i] = image;
+	    }
+	
+	    return loadedimages;
 	  };
 	};
 
@@ -39730,15 +39760,20 @@
 	    this.vel = options.vel;
 	    this.radius = options.radius;
 	    this.color = options.color;
+	    // this.img = img;
 	  };
 	
-	  MovingObject.prototype.draw = function (ctx) {
-	    ctx.fillStyle = this.color;
+	  MovingObject.prototype.draw = function (ctx, img) {
+	    // ctx.fillStyle = this.color;
+	    //
+	    // ctx.beginPath();
+	    // ctx.arc(
+	    //   this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
+	    // );
 	
-	    ctx.beginPath();
-	    ctx.arc(this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true);
-	
-	    ctx.fill();
+	    // ctx.fill();
+	    _this = this;
+	    ctx.drawImage(img, _this.pos[0] - this.radius, _this.pos[1] - this.radius, 2 * _this.radius, 2 * _this.radius);
 	  };
 	
 	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
@@ -39779,7 +39814,7 @@
 	    window.MicroMunch = {};
 	  }
 	
-	  var RADIUS = 25;
+	  var RADIUS = 28;
 	  var COLOR = '#777';
 	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 	  var PLAYER_MAX_VEL = 3;
@@ -39850,7 +39885,7 @@
 	    window.MicroMunch = {};
 	  }
 	
-	  var RADIUS = 50;
+	  var RADIUS = 57.1429;
 	  var COLOR = '#000';
 	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
 	  var MAX_VEL = 2.3;
@@ -39916,7 +39951,7 @@
 	    window.MicroMunch = {};
 	  }
 	
-	  var RADIUS = 7;
+	  var RADIUS = 8;
 	  var COLOR = '#ff9900';
 	  var PREY_VEL = 1.8;
 	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
@@ -39928,6 +39963,7 @@
 	    options.vel = Prey.preyVel();
 	    options.radius = RADIUS;
 	    options.color = COLOR;
+	    // options.img = '../../public/prey.png';
 	    this.changeTimeStamp = 0;
 	    this.prevVel = Prey.preyVel();
 	

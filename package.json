@@ -11,6 +11,7 @@
     "babel-preset-react": "^6.1.4",
     "body-parser": "~1.8.0",
     "compression": "~1.0.11",
+    "ejs": "^2.4.1",
     "express": "~4.8.8",
     "flux": "^2.1.1",
     "history": "1.13.x",
