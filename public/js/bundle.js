@@ -39444,6 +39444,7 @@
 	  };
 	
 	  window.addEventListener('keydown', function (event) {
+	    event.preventDefault();
 	    var Game = this.MicroMunch.Game;
 	    var keyCode = event.keyCode;
 	    switch (keyCode) {
@@ -39463,10 +39464,27 @@
 	        //w
 	        Game.userMoves.w = true;
 	        break;
+	      case 37:
+	        // left arrow
+	        Game.userMoves.a = true;
+	        break;
+	      case 38:
+	        // up arrow
+	        Game.userMoves.w = true;
+	        break;
+	      case 39:
+	        // right arrow
+	        Game.userMoves.d = true;
+	        break;
+	      case 40:
+	        // down arrow
+	        Game.userMoves.s = true;
+	        break;
 	    }
 	  });
 	
 	  window.addEventListener('keyup', function (event) {
+	    event.preventDefault();
 	    var keyCode = event.keyCode;
 	    switch (keyCode) {
 	      case 68:
@@ -39484,6 +39502,22 @@
 	      case 87:
 	        //w
 	        Game.userMoves.w = false;
+	        break;
+	      case 37:
+	        // left arrow
+	        Game.userMoves.a = false;
+	        break;
+	      case 38:
+	        // up arrow
+	        Game.userMoves.w = false;
+	        break;
+	      case 39:
+	        // right arrow
+	        Game.userMoves.d = false;
+	        break;
+	      case 40:
+	        // down arrow
+	        Game.userMoves.s = false;
 	        break;
 	    }
 	  });
@@ -39958,7 +39992,7 @@
 	  };
 	
 	  Predator.prototype.isTouchingPlayer = function (player) {
-	    return MicroMunch.Util.distance(this.pos, player.pos) < RADIUS + player.radius;
+	    return MicroMunch.Util.distance(this.pos, player.pos) < 0.95 * (RADIUS + player.radius);
 	  };
 	
 	  Predator.prototype.chasePrey = function (player) {
@@ -40262,7 +40296,7 @@
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'Use WSAD to move'
+	        'Use arrow keys or WSAD to move'
 	      ),
 	      React.createElement(
 	        'p',

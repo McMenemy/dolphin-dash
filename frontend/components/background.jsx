@@ -19,7 +19,7 @@ var Background = React.createClass({
         </p>
 
         <h2>Directions</h2>
-          <p className="directions-item">Use WSAD to move</p>
+          <p className="directions-item">Use arrow keys or WSAD to move</p>
           <p className="directions-item">Catch small dots</p>
           <p className="directions-item">Avoid large dot</p>
       </Paper>

@@ -52,7 +52,7 @@ module.exports = function () {
   };
 
   Predator.prototype.isTouchingPlayer = function (player) {
-    return MicroMunch.Util.distance(this.pos, player.pos) < RADIUS + player.radius;
+    return MicroMunch.Util.distance(this.pos, player.pos) < 0.95 * (RADIUS + player.radius);
   };
 
   Predator.prototype.chasePrey = function (player) {

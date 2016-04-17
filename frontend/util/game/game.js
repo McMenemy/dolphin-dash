@@ -40,6 +40,7 @@ module.exports = function () {
   };
 
   window.addEventListener('keydown', function (event) {
+    event.preventDefault();
     var Game = this.MicroMunch.Game;
     var keyCode = event.keyCode;
     switch (keyCode) {
@@ -55,10 +56,23 @@ module.exports = function () {
       case 87: //w
         Game.userMoves.w = true;
         break;
+      case 37: // left arrow
+        Game.userMoves.a = true;
+        break;
+      case 38: // up arrow
+        Game.userMoves.w = true;
+        break;
+      case 39: // right arrow
+        Game.userMoves.d = true;
+        break;
+      case 40: // down arrow
+        Game.userMoves.s = true;
+        break;
     }
   });
 
   window.addEventListener('keyup', function (event) {
+    event.preventDefault();
     var keyCode = event.keyCode;
     switch (keyCode) {
       case 68: //d
@@ -72,6 +86,18 @@ module.exports = function () {
         break;
       case 87: //w
         Game.userMoves.w = false;
+        break;
+      case 37: // left arrow
+        Game.userMoves.a = false;
+        break;
+      case 38: // up arrow
+        Game.userMoves.w = false;
+        break;
+      case 39: // right arrow
+        Game.userMoves.d = false;
+        break;
+      case 40: // down arrow
+        Game.userMoves.s = false;
         break;
     }
   });
