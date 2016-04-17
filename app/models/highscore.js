@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
-var Paper = require('material-ui/lib/paper');
+var Schema = mongoose.Schema;
 
-var HighScoreSchema = new Schema({
+var HighscoreSchema = new Schema({
   username: String,
   score: Number,
 });
 
-mongoose.model('HighScore', HighScoreSchema);
+mongoose.model('Highscore', HighscoreSchema);
