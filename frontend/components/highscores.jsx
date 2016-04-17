@@ -17,16 +17,16 @@ var HighScores = React.createClass({
       >
 
       <h2>High Scores</h2>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
-        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
+        <p className="directions-item">feature coming soon</p>
       </Paper>
     );
   },

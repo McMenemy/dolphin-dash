@@ -33536,52 +33536,52 @@
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'asdfas 43'
+	        'feature coming soon'
 	      )
 	    );
 	  }
@@ -33638,6 +33638,7 @@
 	      React.createElement('br', null),
 	      React.createElement(RaisedButton, {
 	        label: 'Submit Score',
+	        disabled: true,
 	        onMouseDown: this.startGame,
 	        backgroundColor: '#29B6F6',
 	        labelColor: '#FFFFFF',

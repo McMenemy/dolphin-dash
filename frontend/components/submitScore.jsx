@@ -41,6 +41,7 @@ var SubmitScore = React.createClass({
 
         <RaisedButton
           label="Submit Score"
+          disabled={true}
           onMouseDown={this.startGame}
           backgroundColor='#29B6F6'
           labelColor='#FFFFFF'
