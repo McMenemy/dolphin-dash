@@ -2,6 +2,7 @@ var React = require('react');
 var GameCanvas = require('../components/gameCanvas');
 var Background = require('../components/background');
 var HighScores = require('../components/highscores');
+var SubmitScore = require('../components/submitScore');
 var Paper = require('material-ui/lib/paper');
 
 var App = React.createClass({
@@ -21,6 +22,7 @@ var App = React.createClass({
           <HighScores />
         </Paper>
         <GameCanvas />
+        <SubmitScore />
       </div>
     );
   },

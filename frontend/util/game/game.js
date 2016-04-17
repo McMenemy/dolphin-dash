@@ -25,7 +25,8 @@ module.exports = function () {
     this.timestamp = 0;
     this.scoreboard = document.getElementById('scoreboard');
     this.score = 0;
-    this.gamestatus = document.getElementById('gamestatus');
+    this.gamestatus = document.getElementById('modal');
+    this.modalText = document.getElementById('modal-text');
     this.startTime = new Date;
     this.timer = document.getElementById('timer');
     this.shouldGameContinue = true;
@@ -39,7 +40,7 @@ module.exports = function () {
     d: [1, 0],
   };
 
-  window.addEventListener('keydown', function (event) {
+  var keydownListener = function (event) {
     event.preventDefault();
     var Game = this.MicroMunch.Game;
     var keyCode = event.keyCode;
@@ -69,9 +70,11 @@ module.exports = function () {
         Game.userMoves.s = true;
         break;
     }
-  });
+  };
 
-  window.addEventListener('keyup', function (event) {
+  window.addEventListener('keydown', keydownListener);
+
+  var keyupListener = function (event) {
     event.preventDefault();
     var keyCode = event.keyCode;
     switch (keyCode) {
@@ -100,7 +103,9 @@ module.exports = function () {
         Game.userMoves.s = false;
         break;
     }
-  });
+  };
+
+  window.addEventListener('keyup', keyupListener);
 
   Game.userMoves = {
     d: false,
@@ -204,14 +209,21 @@ module.exports = function () {
   Game.prototype.isGameOver = function () {
     this.timeRemaining = this.gettimeRemaining();
     this.timer.innerHTML = Math.round(this.timeRemaining / 1000);
-    if (this.timeRemaining > GAME_DURATION) {
-      this.gamestatus.innerHTML = 'time up';
+    if (this.timeRemaining < 0) {
+      this.modalText.innerHTML = 'Times up! You lived to hunt another day.';
+      this.gamestatus.style.visibility = 'visible';
       this.shouldGameContinue = false;
+      window.removeEventListener('keydown', keydownListener);
+      window.removeEventListener('keyup', keyupListener);
       return true;
     }
 
     if (this.player.isEaten) {
+      this.modalText.innerHTML = 'You have been eaten!';
+      this.gamestatus.style.visibility = 'visible';
       this.shouldGameContinue = false;
+      window.removeEventListener('keydown', keydownListener);
+      window.removeEventListener('keyup', keyupListener);
       return true;
     }
 
