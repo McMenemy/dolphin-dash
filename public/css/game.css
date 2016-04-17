@@ -5,6 +5,15 @@ body {
   text-align: center;
 }
 
+p {
+  margin-top: 3px;
+}
+
+h2 {
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
 #game-canvas {
   width: 600px;
   height: 600px;
@@ -27,6 +36,6 @@ body {
 }
 
 .directions-item {
-  padding: 0;
+  padding: .53px;
   margin: 0;
 }

@@ -2,6 +2,7 @@ var React = require('react');
 var Paper = require('material-ui/lib/paper');
 var TextField = require('material-ui/lib/text-field');
 var RaisedButton = require('material-ui/lib/raised-button');
+var PlayButton = require('../components/playButton');
 
 var SubmitScore = React.createClass({
 
@@ -46,13 +47,7 @@ var SubmitScore = React.createClass({
           style={ { margin: '5px', opacity: '1' } }
         />
 
-        <RaisedButton
-          label="Play Again"
-          onMouseDown={this.startGame}
-          backgroundColor='#29B6F6'
-          labelColor='#FFFFFF'
-          style={ { margin: '5px', opacity: '1' } }
-        />
+        <PlayButton text={'play again'} />
       </Paper>
     );
   },

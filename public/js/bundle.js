@@ -31226,40 +31226,12 @@
 	var ToolbarGroup = __webpack_require__(289);
 	var Separator = __webpack_require__(290);
 	var ToolbarTitle = __webpack_require__(291);
-	var RaisedButton = __webpack_require__(292);
 	var Paper = __webpack_require__(313);
-	var Game = __webpack_require__(315);
-	var GameView = __webpack_require__(316);
-	var MovingObject = __webpack_require__(317);
-	var Player = __webpack_require__(318);
-	var Predator = __webpack_require__(319);
-	var Prey = __webpack_require__(320);
-	var GameUtil = __webpack_require__(321);
+	var PlayButton = __webpack_require__(336);
 	
 	var GameBar = React.createClass({
 	  displayName: 'GameBar',
 	
-	  startGame: function () {
-	    var canvas = document.getElementById('game-canvas');
-	    canvas.width = 600;
-	    canvas.height = 600;
-	    var ctx = canvas.getContext('2d');
-	    this.runScripts();
-	    var game = new MicroMunch.Game();
-	
-	    new MicroMunch.GameView(game, ctx).start();
-	  },
-	
-	  runScripts: function () {
-	    // kind of a hack because originally the game logic was a bunch of IIFEs and just HTML
-	    GameUtil();
-	    MovingObject();
-	    Prey();
-	    Player();
-	    Predator();
-	    Game();
-	    GameView();
-	  },
 	
 	  render: function () {
 	    return React.createElement(
@@ -31312,12 +31284,7 @@
 	      React.createElement(
 	        ToolbarGroup,
 	        null,
-	        React.createElement(RaisedButton, {
-	          label: 'Play Game',
-	          onMouseDown: this.startGame,
-	          backgroundColor: '#29B6F6',
-	          labelColor: '#FFFFFF'
-	        })
+	        React.createElement(PlayButton, { text: 'Play Game' })
 	      )
 	    );
 	  }
@@ -40298,6 +40265,11 @@
 	        }
 	      },
 	      React.createElement(
+	        'h2',
+	        null,
+	        'Background Story'
+	      ),
+	      React.createElement(
 	        'p',
 	        { className: 'background' },
 	        'You are a microorganism trying to make your way in the big ocean by munching on smaller microorganisms that swarm the seas. Your prey will not allow their demise easily and it will take some skillful maneuvering to catch them. However, take care not to narrow you focus too much because sometimes an even larger microorganism will patrol these waters and you may become the prey not the predator... One last warning - as the night approaches differentiating between friend and foe may not be easy.'
@@ -40315,12 +40287,12 @@
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'Catch small dots'
+	        'Catch smaller microbes'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'Avoid large dot'
+	        'Avoid larger microbes'
 	      )
 	    );
 	  }
@@ -40357,22 +40329,57 @@
 	      React.createElement(
 	        'h2',
 	        null,
-	        'Directions'
+	        'High Scores'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'Use WSAD to move'
+	        'asdfas 43'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'Catch smaller microbes'
+	        'asdfas 43'
 	      ),
 	      React.createElement(
 	        'p',
 	        { className: 'directions-item' },
-	        'Avoid larger microbes'
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'asdfas 43'
 	      )
 	    );
 	  }
@@ -40389,6 +40396,7 @@
 	var Paper = __webpack_require__(313);
 	var TextField = __webpack_require__(326);
 	var RaisedButton = __webpack_require__(292);
+	var PlayButton = __webpack_require__(336);
 	
 	var SubmitScore = React.createClass({
 	  displayName: 'SubmitScore',
@@ -40433,13 +40441,7 @@
 	        labelColor: '#FFFFFF',
 	        style: { margin: '5px', opacity: '1' }
 	      }),
-	      React.createElement(RaisedButton, {
-	        label: 'Play Again',
-	        onMouseDown: this.startGame,
-	        backgroundColor: '#29B6F6',
-	        labelColor: '#FFFFFF',
-	        style: { margin: '5px', opacity: '1' }
-	      })
+	      React.createElement(PlayButton, { text: 'play again' })
 	    );
 	  }
 	
@@ -41712,6 +41714,63 @@
 	
 	exports.default = TextFieldUnderline;
 	module.exports = exports['default'];
+
+/***/ },
+/* 336 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var RaisedButton = __webpack_require__(292);
+	var GameUtil = __webpack_require__(321);
+	var Game = __webpack_require__(315);
+	var GameView = __webpack_require__(316);
+	var MovingObject = __webpack_require__(317);
+	var Player = __webpack_require__(318);
+	var Predator = __webpack_require__(319);
+	var Prey = __webpack_require__(320);
+	
+	var PlayButton = React.createClass({
+	  displayName: 'PlayButton',
+	
+	  startGame: function () {
+	    document.getElementById('modal').style.visibility = 'hidden';
+	    var canvas = document.getElementById('game-canvas');
+	    canvas.width = 600;
+	    canvas.height = 600;
+	    var ctx = canvas.getContext('2d');
+	    this.runScripts();
+	    var game = new MicroMunch.Game();
+	
+	    new MicroMunch.GameView(game, ctx).start();
+	  },
+	
+	  runScripts: function () {
+	    // kind of a hack because originally the game logic was a bunch of IIFEs and just HTML
+	    GameUtil();
+	    MovingObject();
+	    Prey();
+	    Player();
+	    Predator();
+	    Game();
+	    GameView();
+	  },
+	
+	  render: function () {
+	    return React.createElement(RaisedButton, {
+	      label: this.props.text,
+	      onMouseDown: this.startGame,
+	      backgroundColor: '#29B6F6',
+	      labelColor: '#FFFFFF',
+	      style: {
+	        marginTop: '10px',
+	        marginLeft: '15px'
+	      }
+	    });
+	  }
+	
+	});
+	
+	module.exports = PlayButton;
 
 /***/ }
 /******/ ]);

@@ -16,10 +16,17 @@ var HighScores = React.createClass({
         }}
       >
 
-      <h2>Directions</h2>
-        <p className="directions-item">Use WSAD to move</p>
-        <p className="directions-item">Catch smaller microbes</p>
-        <p className="directions-item">Avoid larger microbes</p>
+      <h2>High Scores</h2>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
+        <p className="directions-item">asdfas 43</p>
       </Paper>
     );
   },
