@@ -31141,7 +31141,8 @@
 	var React = __webpack_require__(1);
 	var GameCanvas = __webpack_require__(235);
 	var Background = __webpack_require__(322);
-	var Scoreboard = __webpack_require__(323);
+	var HighScores = __webpack_require__(324);
+	var Paper = __webpack_require__(313);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -31151,7 +31152,19 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'container' },
-	      React.createElement(Background, null),
+	      React.createElement(
+	        Paper,
+	        {
+	          zDepth: 0,
+	          style: {
+	            width: '350px',
+	            float: 'left',
+	            clear: 'both'
+	          }
+	        },
+	        React.createElement(Background, null),
+	        React.createElement(HighScores, null)
+	      ),
 	      React.createElement(GameCanvas, null)
 	    );
 	  }
@@ -31179,17 +31192,20 @@
 	        zDpeth: 0,
 	        style: {
 	          width: '600px',
+	          float: 'right',
 	          display: 'inline-block'
-	        } },
+	        }
+	      },
 	      React.createElement(GameBar, null),
 	      React.createElement(
 	        Paper,
 	        {
 	          zDepth: 1,
 	          style: {
-	            width: 600,
-	            height: 600
-	          } },
+	            width: '60%',
+	            height: '600px'
+	          }
+	        },
 	        React.createElement('canvas', { id: 'game-canvas' })
 	      )
 	    );
@@ -31282,7 +31298,7 @@
 	        }),
 	        React.createElement(ToolbarTitle, {
 	          id: 'timer',
-	          text: '45',
+	          text: '20',
 	          style: {
 	            color: '#FFFFFF'
 	          }
@@ -40230,10 +40246,9 @@
 	          width: '350px',
 	          display: 'inline-block',
 	          padding: '10px',
-	          verticalAlign: 'top',
-	          margin: '108px 25px 0px 0px',
 	          backgroundColor: '#C5CAE9'
-	        } },
+	        }
+	      },
 	      React.createElement(
 	        'p',
 	        { className: 'background' },
@@ -40267,26 +40282,56 @@
 	module.exports = Background;
 
 /***/ },
-/* 323 */
+/* 323 */,
+/* 324 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var Paper = __webpack_require__(313);
 	
-	var Scoreboard = React.createClass({
-	  displayName: 'Scoreboard',
+	var HighScores = React.createClass({
+	  displayName: 'HighScores',
 	
 	
 	  render: function () {
 	    return React.createElement(
-	      'div',
-	      { className: 'right-pane' },
-	      'scoreboard here'
+	      Paper,
+	      {
+	        style: {
+	          width: '350px',
+	          display: 'inline-block',
+	          padding: '10px',
+	          marginTop: '15px',
+	          backgroundColor: '#3F51B5',
+	          color: 'white'
+	        }
+	      },
+	      React.createElement(
+	        'h2',
+	        null,
+	        'Directions'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'Use WSAD to move'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'Catch smaller microbes'
+	      ),
+	      React.createElement(
+	        'p',
+	        { className: 'directions-item' },
+	        'Avoid larger microbes'
+	      )
 	    );
 	  }
 	
 	});
 	
-	module.exports = Scoreboard;
+	module.exports = HighScores;
 
 /***/ }
 /******/ ]);

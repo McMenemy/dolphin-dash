@@ -10,10 +10,9 @@ var Background = React.createClass({
           width: '350px',
           display: 'inline-block',
           padding: '10px',
-          verticalAlign: 'top',
-          margin: '108px 25px 0px 0px',
           backgroundColor: '#C5CAE9',
-        }}>
+        }}
+      >
 
         <p className='background'>
           You are a microorganism trying to make your way in the big ocean by munching on smaller microorganisms that swarm the seas. Your prey will not allow their demise easily and it will take some skillful maneuvering to catch them. However, take care not to narrow you focus too much because sometimes an even larger microorganism will patrol these waters and you may become the prey not the predator... One last warning - as the night approaches differentiating between friend and foe may not be easy.

@@ -71,7 +71,7 @@ var GameBar = React.createClass({
           />
           <ToolbarTitle
             id="timer"
-            text="45"
+            text="20"
             style={{
               color: '#FFFFFF',
             }}

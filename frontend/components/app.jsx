@@ -1,14 +1,25 @@
 var React = require('react');
 var GameCanvas = require('../components/gameCanvas');
 var Background = require('../components/background');
-var Scoreboard = require('../components/scoreboard');
+var HighScores = require('../components/highscores');
+var Paper = require('material-ui/lib/paper');
 
 var App = React.createClass({
 
   render: function () {
     return (
       <div className="container">
-        <Background />
+        <Paper
+          zDepth={0}
+          style={{
+            width: '350px',
+            float: 'left',
+            clear: 'both',
+          }}
+        >
+          <Background />
+          <HighScores />
+        </Paper>
         <GameCanvas />
       </div>
     );

@@ -10,17 +10,20 @@ var GameCanvas = React.createClass({
         zDpeth={0}
         style={{
           width: '600px',
+          float: 'right',
           display: 'inline-block',
-        }}>
+        }}
+      >
 
         <GameBar />
 
         <Paper
           zDepth={1}
           style={{
-            width: 600,
-            height: 600,
-          }}>
+            width: '60%',
+            height: '600px',
+          }}
+        >
           <canvas id="game-canvas"></canvas>
         </Paper>
       </Paper>

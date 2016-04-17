@@ -1,15 +1,27 @@
+body {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+}
+
 #game-canvas {
   width: 600px;
   height: 600px;
+  display: inline-block;
   background-image: url('../img/game_background.png');
   background-size: 600px 600px;
   background-repeat: no-repeat;
-  margin: auto;
 }
 
 .container {
-  width: 1000px;
-  margin: auto;
+  width: 965px;
+  height: 650px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -325px;
+  margin-left: -500px;
   font-family: 'Roboto', sans-serif;
   text-align: center;
 }
