@@ -5,6 +5,10 @@
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+   "node": "4.4.2",
+   "npm": "2.15.0"
+ },
   "dependencies": {
     "babel-core": "^6.1.4",
     "babel-loader": "^6.1.0",
