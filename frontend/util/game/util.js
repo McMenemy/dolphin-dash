@@ -3,6 +3,7 @@ module.exports = function () {
     window.MicroMunch = {};
   }
 
+  var SMOOTH_ROTATION = 0.174533 * 5;
   var Util = MicroMunch.Util = {};
 
   Util.inherits = function (ChildClass, ParentClass) {
@@ -86,4 +87,64 @@ module.exports = function () {
     }
   };
 
+  Util.dotProduct = function (vector1, vector2) {
+    var dotProd = 0;
+    for (var i = 0; i < vector1.length; i++) {
+      dotProd += vector1[i] * vector2[i];
+    }
+
+    return dotProd;
+  };
+
+  // doesnt work
+  // Util.smoothRotation = function (prevAngle, newAngle) {
+  //   if (Math.abs(newAngle - prevAngle) <= SMOOTH_ROTATION) {
+  //     return newAngle;
+  //     // return newAngle += SMOOTH_ROTATION;
+  //   } else if ((newAngle - prevAngle) > SMOOTH_ROTATION) {
+  //     return prevAngle += SMOOTH_ROTATION;
+  //   } else {
+  //     return prevAngle -= SMOOTH_ROTATION;
+  //   }
+  // };
+
+  Util.getRotationAngle = function (vector) {
+    var baseVector = [-1, 0];
+    var cosA = Math.abs(Util.dotProduct(baseVector, vector))
+      / (Util.calcVectorMag(baseVector) * Util.calcVectorMag(vector));
+    var angle = Math.acos(cosA);
+
+    // only left
+    if (vector[0] < 0 && vector[1] === 0) {
+      return 0;
+
+    // only right
+    } else if (vector[0] > 0 && vector[1] === 0) {
+      return Math.PI;
+
+    // only up
+    } else if (vector[0] == 0 && vector[1] < 0) {
+      return Math.PI / 2;
+
+    // only down
+    } else if (vector[0] == 0 && vector[1] > 0) {
+      return 3 * Math.PI / 2;
+
+    // right and up
+    } else if (vector[0] > 0 && vector[1] < 0) {
+      return angle + Math.PI / 2;
+
+    // right and down
+    } else if (vector[0] > 0 && vector[1] > 0) {
+      return angle + Math.PI;
+
+    // left and down
+    } else if (vector[0] < 0 && vector[1] > 0) {
+      return -angle;
+
+    // left and up
+    } else if (vector[0] < 0 && vector[1] < 0) {
+      return angle;
+    }
+  };
 };

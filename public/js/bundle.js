@@ -39530,18 +39530,20 @@
 	    this.player.draw(ctx, playerImg);
 	  };
 	
-	  Game.prototype.finalDraw = function (ctx) {
+	  Game.prototype.finalDraw = function (ctx, images) {
+	    var playerImg = images[0];
+	    var preyImg = images[1];
+	    var predatorImg = images[2];
+	
 	    ctx.clearRect(0, 0, DIM_X, DIM_Y);
 	    ctx.fillStyle = 'rgba(0, 0, 0, 0)';
 	    ctx.fillRect(0, 0, DIM_X, DIM_Y);
 	    this.prey.forEach(function (prey) {
-	      prey.draw(ctx);
-	
-	      // ctx.drawImage('prey.png', prey.pos[0], prey.pos[1]);
+	      prey.draw(ctx, preyImg);
 	    });
 	
-	    this.predator.draw(ctx);
-	    this.player.draw(ctx);
+	    this.predator.draw(ctx, predatorImg);
+	    this.player.draw(ctx, playerImg);
 	  };
 	
 	  Game.prototype.step = function (delta) {
@@ -39573,7 +39575,6 @@
 	    }
 	
 	    if (this.player.isEaten) {
-	      this.gamestatus.innerHTML = 'you\'ve been eaten';
 	      this.shouldGameContinue = false;
 	      return true;
 	    }
@@ -39692,7 +39693,6 @@
 	  var GameView = MicroMunch.GameView = function (game, ctx) {
 	    this.ctx = ctx;
 	    this.images = this.loadImages(['img/player.png', 'img/prey.png', 'img/predator.png']);
-	    // this.images = this.loadImages(['http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335', 'http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335', 'http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335']);
 	    this.game = game;
 	  };
 	
@@ -39718,7 +39718,7 @@
 	  };
 	
 	  GameView.prototype.finalAnimate = function () {
-	    this.game.finalDraw(this.ctx);
+	    this.game.finalDraw(this.ctx, this.images);
 	  };
 	
 	  GameView.prototype.loadImages = function (imagefiles) {
@@ -39759,21 +39759,30 @@
 	    this.pos = options.pos;
 	    this.vel = options.vel;
 	    this.radius = options.radius;
+	    this.angle = 0;
 	    this.color = options.color;
 	    // this.img = img;
 	  };
 	
 	  MovingObject.prototype.draw = function (ctx, img) {
+	    // for circles instead of PNGs - useful for seeing if PNG img matches game logic
 	    // ctx.fillStyle = this.color;
 	    //
 	    // ctx.beginPath();
 	    // ctx.arc(
 	    //   this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
 	    // );
-	
 	    // ctx.fill();
-	    _this = this;
-	    ctx.drawImage(img, _this.pos[0] - this.radius, _this.pos[1] - this.radius, 2 * _this.radius, 2 * _this.radius);
+	
+	    this.angle = MicroMunch.Util.getRotationAngle(this.vel, this.angle, this.color);
+	
+	    ctx.save();
+	    ctx.translate(this.pos[0], this.pos[1]);
+	    ctx.rotate(this.angle);
+	    ctx.drawImage(img, -this.radius, -this.radius, 2 * this.radius, 2 * this.radius);
+	
+	    // ctx.drawImage(image, -(image.width / 2), -(image.height / 2));
+	    ctx.restore();
 	  };
 	
 	  var NORMAL_FRAME_TIME_DELTA = 1000 / 60;
@@ -40061,6 +40070,7 @@
 	    window.MicroMunch = {};
 	  }
 	
+	  var SMOOTH_ROTATION = 0.174533 * 5;
 	  var Util = MicroMunch.Util = {};
 	
 	  Util.inherits = function (ChildClass, ParentClass) {
@@ -40138,6 +40148,66 @@
 	    } else {
 	      return correctVector;
 	    }
+	  };
+	
+	  Util.dotProduct = function (vector1, vector2) {
+	    var dotProd = 0;
+	    for (var i = 0; i < vector1.length; i++) {
+	      dotProd += vector1[i] * vector2[i];
+	    }
+	
+	    return dotProd;
+	  };
+	
+	  // doesnt work
+	  // Util.smoothRotation = function (prevAngle, newAngle) {
+	  //   if (Math.abs(newAngle - prevAngle) <= SMOOTH_ROTATION) {
+	  //     return newAngle;
+	  //     // return newAngle += SMOOTH_ROTATION;
+	  //   } else if ((newAngle - prevAngle) > SMOOTH_ROTATION) {
+	  //     return prevAngle += SMOOTH_ROTATION;
+	  //   } else {
+	  //     return prevAngle -= SMOOTH_ROTATION;
+	  //   }
+	  // };
+	
+	  Util.getRotationAngle = function (vector) {
+	    var baseVector = [-1, 0];
+	    var cosA = Math.abs(Util.dotProduct(baseVector, vector)) / (Util.calcVectorMag(baseVector) * Util.calcVectorMag(vector));
+	    var angle = Math.acos(cosA);
+	
+	    // only left
+	    if (vector[0] < 0 && vector[1] === 0) {
+	      return 0;
+	
+	      // only right
+	    } else if (vector[0] > 0 && vector[1] === 0) {
+	        return Math.PI;
+	
+	        // only up
+	      } else if (vector[0] == 0 && vector[1] < 0) {
+	          return Math.PI / 2;
+	
+	          // only down
+	        } else if (vector[0] == 0 && vector[1] > 0) {
+	            return 3 * Math.PI / 2;
+	
+	            // right and up
+	          } else if (vector[0] > 0 && vector[1] < 0) {
+	              return angle + Math.PI / 2;
+	
+	              // right and down
+	            } else if (vector[0] > 0 && vector[1] > 0) {
+	                return angle + Math.PI;
+	
+	                // left and down
+	              } else if (vector[0] < 0 && vector[1] > 0) {
+	                  return -angle;
+	
+	                  // left and up
+	                } else if (vector[0] < 0 && vector[1] < 0) {
+	                    return angle;
+	                  }
 	  };
 	};
 

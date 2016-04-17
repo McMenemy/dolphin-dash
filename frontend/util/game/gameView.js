@@ -7,7 +7,6 @@ module.exports = function () {
   var GameView = MicroMunch.GameView = function (game, ctx) {
     this.ctx = ctx;
     this.images = this.loadImages(['img/player.png', 'img/prey.png', 'img/predator.png']);
-    // this.images = this.loadImages(['http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335', 'http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335', 'http://vignette2.wikia.nocookie.net/mascotia/images/4/4c/Sedger_on_Spore.png/revision/latest?cb=20110913030335']);
     this.game = game;
   };
 
@@ -33,7 +32,7 @@ module.exports = function () {
   };
 
   GameView.prototype.finalAnimate = function () {
-    this.game.finalDraw(this.ctx);
+    this.game.finalDraw(this.ctx, this.images);
   };
 
   GameView.prototype.loadImages = function (imagefiles) {

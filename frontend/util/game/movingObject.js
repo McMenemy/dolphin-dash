@@ -7,21 +7,34 @@ module.exports = function () {
     this.pos = options.pos;
     this.vel = options.vel;
     this.radius = options.radius;
+    this.angle = 0;
     this.color = options.color;
     // this.img = img;
   };
 
   MovingObject.prototype.draw = function (ctx, img) {
+    // for circles instead of PNGs - useful for seeing if PNG img matches game logic
     // ctx.fillStyle = this.color;
     //
     // ctx.beginPath();
     // ctx.arc(
     //   this.pos[0], this.pos[1], this.radius, 0, 2 * Math.PI, true
     // );
-
     // ctx.fill();
-    _this = this;
-    ctx.drawImage(img, _this.pos[0] - this.radius, _this.pos[1] - this.radius, 2 * _this.radius, 2 * _this.radius);
+
+    this.angle = MicroMunch.Util.getRotationAngle(this.vel, this.angle, this.color);
+
+    ctx.save();
+    ctx.translate(this.pos[0], this.pos[1]);
+    ctx.rotate(this.angle);
+    ctx.drawImage(
+      img, -this.radius, -this.radius,
+      2 * this.radius, 2 * this.radius
+    );
+
+    // ctx.drawImage(image, -(image.width / 2), -(image.height / 2));
+    ctx.restore();
+
   };
 
   var NORMAL_FRAME_TIME_DELTA = 1000 / 60;

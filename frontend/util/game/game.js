@@ -140,18 +140,20 @@ module.exports = function () {
     this.player.draw(ctx, playerImg);
   };
 
-  Game.prototype.finalDraw = function (ctx) {
+  Game.prototype.finalDraw = function (ctx, images) {
+    var playerImg = images[0];
+    var preyImg = images[1];
+    var predatorImg = images[2];
+
     ctx.clearRect(0, 0, DIM_X, DIM_Y);
     ctx.fillStyle = 'rgba(0, 0, 0, 0)';
     ctx.fillRect(0, 0, DIM_X, DIM_Y);
     this.prey.forEach(function (prey) {
-      prey.draw(ctx);
-
-      // ctx.drawImage('prey.png', prey.pos[0], prey.pos[1]);
+      prey.draw(ctx, preyImg);
     });
 
-    this.predator.draw(ctx);
-    this.player.draw(ctx);
+    this.predator.draw(ctx, predatorImg);
+    this.player.draw(ctx, playerImg);
   };
 
   Game.prototype.step = function (delta) {
@@ -183,7 +185,6 @@ module.exports = function () {
     }
 
     if (this.player.isEaten) {
-      this.gamestatus.innerHTML = 'you\'ve been eaten';
       this.shouldGameContinue = false;
       return true;
     }
